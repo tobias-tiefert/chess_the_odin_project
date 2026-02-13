@@ -8,6 +8,8 @@ class Board
   BLACK_FIELD = "\e[43m"
   WHITE_FIELD = "\e[107m"
 
+  attr_reader :postions
+
   def initialize
     @positions = initialize_positions
   end
@@ -44,7 +46,8 @@ class Board
     background_color2 = type == 'odd' ? BLACK_FIELD : WHITE_FIELD
     row.each_with_index do |field, field_index|
       background_color = field_index.odd? ? background_color1 : background_color2
-      print "#{background_color} ♕ "
+      field_token = field.nil? ? ' ' : field.token 
+      print "#{background_color} #{field_token} "
     end
   end
 
