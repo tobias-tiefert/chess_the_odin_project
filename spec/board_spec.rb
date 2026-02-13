@@ -26,4 +26,15 @@ describe Board do
       expect(test_board[5].all?(&:nil?)).to be true
     end
   end
+  describe '#elemen' do
+    test_positions = [
+      [nil, nil, 4, nil],
+      [6, 7, 'hallo', nil]
+    ]
+    it 'returns an element' do
+      board.instance_variable_set(:@positions, test_positions)
+      element = board.element([1, 2])
+      expect(element).to eq('hallo')
+    end
+  end
 end

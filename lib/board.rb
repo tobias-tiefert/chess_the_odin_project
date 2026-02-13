@@ -23,6 +23,10 @@ class Board
     rows
   end
 
+  def element(position)
+    @positions[position[0]][position[1]]
+  end
+
   def draw_board(positions = @positions)
     puts ROW_POSITIONS
     positions.each_with_index { |row, index| draw_row(row, index) }
@@ -46,7 +50,7 @@ class Board
     background_color2 = type == 'odd' ? BLACK_FIELD : WHITE_FIELD
     row.each_with_index do |field, field_index|
       background_color = field_index.odd? ? background_color1 : background_color2
-      field_token = field.nil? ? ' ' : field.token 
+      field_token = field.nil? ? ' ' : field.token
       print "#{background_color} #{field_token} "
     end
   end
