@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
+require_relative 'long_distance_piece'
 
 # class that represents the bishop piece in the chess game
-class Bishop < Piece
+class Bishop < LongDistancePiece
   WHITE_TOKEN = '♗'
   BLACK_TOKEN = '♝'
 

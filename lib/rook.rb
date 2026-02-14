@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'piece'
+require_relative 'long_distance_piece'
 
 # class that represents the rook piece in the chess game
-class Rook < Piece
+class Rook < LongDistancePiece
   WHITE_TOKEN = '♖'
   BLACK_TOKEN = '♜'
 
