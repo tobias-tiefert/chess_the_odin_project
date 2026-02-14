@@ -2,7 +2,7 @@
 
 require_relative 'piece'
 
-# class that represents the rook piec in the chess game
+# class that represents the rook piece in the chess game
 class Rook < Piece
   WHITE_TOKEN = '♖'
   BLACK_TOKEN = '♜'
@@ -13,6 +13,4 @@ class Rook < Piece
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @moved = false
   end
-
-  
 end

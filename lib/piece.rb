@@ -33,7 +33,7 @@ class Piece
         new_position = new_position(new_position, direction)
       end
     end
-    output
+    output.sort
   end
 
   def legal_move?(position)
