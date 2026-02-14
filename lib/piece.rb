@@ -26,12 +26,8 @@ class Piece
     output = []
     directions.each do |direction|
       new_position = new_position(position, direction)
-      while legal_move?(new_position)
-        output << new_position
-        break unless @board.element(position).nil?
 
-        new_position = new_position(new_position, direction)
-      end
+      output << new_position if legal_move?(new_position)
     end
     output.sort
   end
