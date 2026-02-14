@@ -33,6 +33,10 @@ class Board
     puts ROW_POSITIONS
   end
 
+  def put_on_board(piece, position)
+    @positions[position[0]][position[1]] = piece
+  end
+
   private
 
   def draw_row(row, index)

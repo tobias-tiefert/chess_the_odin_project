@@ -26,7 +26,7 @@ describe Board do
       expect(test_board[5].all?(&:nil?)).to be true
     end
   end
-  describe '#elemen' do
+  describe '#element' do
     test_positions = [
       [nil, nil, 4, nil],
       [6, 7, 'hallo', nil]
@@ -35,6 +35,13 @@ describe Board do
       board.instance_variable_set(:@positions, test_positions)
       element = board.element([1, 2])
       expect(element).to eq('hallo')
+    end
+  end
+  describe '#put_on_board' do
+    let(:rook) { double('rook') }
+    it 'puts the piece on the board' do
+      board.put_on_board(rook, [0, 0])
+      expect(board.element([0, 0])).to be rook
     end
   end
 end
