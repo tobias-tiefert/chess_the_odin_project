@@ -27,16 +27,11 @@ class Piece
     output = []
     directions.each do |direction|
       new_position = new_position(position, direction)
+      field_element_color = @board.element(new_position).nil? ? 'empty' : @board.element(new_position).color
 
-      output << new_position if legal_move?(new_position)
+      output << new_position if on_the_board?(new_position) && field_element_color != @color
     end
     output.sort
-  end
-
-  def legal_move?(position)
-    condition_board = on_the_board?(position)
-    condition_nil = @board.element(position).nil?
-    condition_board && (condition_nil || @board.element(position).color != @color)
   end
 
   def new_position(position, position_change)
