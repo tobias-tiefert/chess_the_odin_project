@@ -7,7 +7,7 @@ class Bishop < LongDistancePiece
   WHITE_TOKEN = '♗'
   BLACK_TOKEN = '♝'
 
-  def initialize(color = 'white', board = nil, field_color = 'white')
+  def initialize(color = 'white', field_color = 'white', board = nil)
     super(color, board)
     @name = 'Bishop'
     @directions = [[1, 1], [-1, 1], [-1, -1], [1, -1]]

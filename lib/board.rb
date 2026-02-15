@@ -24,7 +24,7 @@ class Board
   end
 
   def element(position)
-    @positions[position[0]][position[1]]
+    @positions[position[1]][position[0]]
   end
 
   def draw_board(positions = @positions)
@@ -35,8 +35,8 @@ class Board
 
   def put_on_board(piece, position)
     @positions[position[1]][position[0]] = piece
-    piece.board = self
     piece.position = position
+    piece.board = self
   end
 
   private
