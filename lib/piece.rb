@@ -40,9 +40,13 @@ class Piece
 
   def move(target)
     if moves.include?(target)
+      target_field = @board.at(target)
       @board.positions[@position[1]][@position[0]] = nil
       @position = target
       @board.positions[target[1]][target[0]] = self
+      unless target_field.nil?
+        puts "The #{@color} #{@name.downcase} took the #{target_field.color} #{target_field.name.downcase}"
+      end
     else
       puts "The #{@color} #{@name.downcase} can't move there"
     end
