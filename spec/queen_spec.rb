@@ -46,6 +46,15 @@ describe Queen do
         moves = queen.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
       end
+      it 'finds all possible moves on the board for a posiotion at the side' do
+        start_postion = [0, 2]
+        queen.instance_variable_set(:@board, board)
+        allow(board).to receive(:element).and_return(nil)
+        possible_moves = [[0, 0], [0, 1], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [1, 1], [1, 2], [1, 3], [2, 0],
+                          [2, 2], [2, 4], [3, 2], [3, 5], [4, 2], [4, 6], [5, 2], [5, 7], [6, 2], [7, 2]]
+        moves = queen.moves(start_postion)
+        expect(moves.sort).to eq(possible_moves.sort)
+      end
     end
     context "when on a field that's not empty" do
       subject(:queen) { described_class.new('white') }

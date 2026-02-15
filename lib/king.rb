@@ -9,6 +9,7 @@ class King < Piece
 
   def initialize(color = 'white')
     super(color)
+    @name = 'King'
     @directions = [[0, 1], [1, 0], [0, -1], [-1, 0],
                    [1, 1], [-1, 1], [-1, -1], [1, -1]]
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
