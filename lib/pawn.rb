@@ -17,8 +17,9 @@ class Pawn < Piece
     long_move: [0, 2]
   }
 
-  def initialize(color = 'white')
-    super(color)
+  def initialize(color = 'white', board = nil)
+    super(color, board)
+    @name = 'Name'
     @directions = get_directions(@color)
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @moved = false
@@ -54,11 +55,11 @@ class Pawn < Piece
 
   def legal_move?(position)
     field = @board.element(position)
-    on_the_board?(position[0], position[1]) && field.nil?
+    on_the_board?(position) && field.nil?
   end
 
   def legal_strike?(position)
     field = @board.element(position)
-    on_the_board?(position[0], position[1]) && field.nil? == false && field.color != @color
+    on_the_board?(position) && field.nil? == false && field.color != @color
   end
 end
