@@ -40,6 +40,8 @@ describe Board do
   describe '#put_on_board' do
     let(:rook) { double('rook') }
     it 'puts the piece on the board' do
+      allow(rook).to receive(:board=)
+      allow(rook).to receive(:position=)
       board.put_on_board(rook, [0, 0])
       expect(board.element([0, 0])).to be rook
     end

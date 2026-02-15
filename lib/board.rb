@@ -8,7 +8,7 @@ class Board
   BLACK_FIELD = "\e[43m"
   WHITE_FIELD = "\e[107m"
 
-  attr_reader :postions
+  attr_accessor :positions
 
   def initialize
     @positions = initialize_positions
@@ -34,7 +34,9 @@ class Board
   end
 
   def put_on_board(piece, position)
-    @positions[position[0]][position[1]] = piece
+    @positions[position[1]][position[0]] = piece
+    piece.board = self
+    piece.position = position
   end
 
   private
