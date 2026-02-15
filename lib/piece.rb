@@ -27,7 +27,7 @@ class Piece
     output = []
     directions.each do |direction|
       new_position = new_position(position, direction)
-      field_element_color = @board.element(new_position).nil? ? 'empty' : @board.element(new_position).color
+      field_element_color = @board.at(new_position).nil? ? 'empty' : @board.at(new_position).color
 
       output << new_position if on_the_board?(new_position) && field_element_color != @color
     end
@@ -44,7 +44,7 @@ class Piece
       @position = target
       @board.positions[target[1]][target[0]] = self
     else
-      puts "#{@name} can't move there"
+      puts "The #{@color} #{@name.downcase} can't move there"
     end
   end
 end

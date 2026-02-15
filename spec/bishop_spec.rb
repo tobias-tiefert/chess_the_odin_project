@@ -27,7 +27,7 @@ describe Bishop do
         start_postion = [0, 0]
 
         bishop.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7]]
         moves = bishop.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
@@ -36,7 +36,7 @@ describe Bishop do
       it 'finds all possible moves on the board for a posiotion in the middle' do
         start_postion = [4, 3]
         bishop.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[0, 7], [1, 0], [1, 6], [2, 1], [2, 5], [3, 2],
                           [3, 4], [5, 2], [5, 4], [6, 1], [6, 5], [7, 0], [7, 6]]
         moves = bishop.moves(start_postion)
@@ -51,7 +51,7 @@ describe Bishop do
       it 'only makes one move when there is an opponent arround (to strike)' do
         start_postion = [4, 3]
         bishop.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 2], [3, 4],
                           [5, 2], [5, 4]]
@@ -61,7 +61,7 @@ describe Bishop do
       it "doesn't move when there are other pieces from the same color arround" do
         start_postion = [4, 3]
         bishop.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = bishop.moves(start_postion)

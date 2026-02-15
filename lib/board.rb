@@ -23,7 +23,7 @@ class Board
     rows
   end
 
-  def element(position)
+  def at(position)
     @positions[position[1]][position[0]]
   end
 

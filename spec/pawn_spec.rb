@@ -30,7 +30,7 @@ describe Pawn do
 
       white_pawn.instance_variable_set(:@board, board)
       white_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(nil)
+      allow(board).to receive(:at).and_return(nil)
       possible_moves = [[4, 5], [4, 4]]
       moves = white_pawn.moves(start_postion)
       expect(moves.sort).to eq(possible_moves.sort)
@@ -40,7 +40,7 @@ describe Pawn do
 
       black_pawn.instance_variable_set(:@board, board)
       black_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(nil)
+      allow(board).to receive(:at).and_return(nil)
       possible_moves = [[4, 2], [4, 3]]
       moves = black_pawn.moves
       expect(moves.sort).to eq(possible_moves.sort)
@@ -50,7 +50,7 @@ describe Pawn do
 
       white_pawn.instance_variable_set(:@board, board)
       white_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(nil, nil, black_piece, black_piece)
+      allow(board).to receive(:at).and_return(nil, nil, black_piece, black_piece)
       allow(black_piece).to receive(:color).and_return('black')
       possible_moves = [[4, 5], [4, 4], [3, 5], [5, 5]]
       moves = white_pawn.moves
@@ -61,7 +61,7 @@ describe Pawn do
 
       black_pawn.instance_variable_set(:@board, board)
       black_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(nil, nil, white_piece, white_piece)
+      allow(board).to receive(:at).and_return(nil, nil, white_piece, white_piece)
       allow(white_piece).to receive(:color).and_return('white')
       possible_moves = [[4, 2], [4, 3], [3, 2], [5, 2]]
       moves = black_pawn.moves
@@ -72,7 +72,7 @@ describe Pawn do
 
       white_pawn.instance_variable_set(:@board, board)
       white_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(white_piece, nil, nil, nil)
+      allow(board).to receive(:at).and_return(white_piece, nil, nil, nil)
       possible_moves = []
       moves = white_pawn.moves(start_postion)
       expect(moves.sort).to eq(possible_moves.sort)
@@ -82,7 +82,7 @@ describe Pawn do
 
       black_pawn.instance_variable_set(:@board, board)
       black_pawn.instance_variable_set(:@position, start_postion)
-      allow(board).to receive(:element).and_return(white_piece, nil, nil, nil)
+      allow(board).to receive(:at).and_return(white_piece, nil, nil, nil)
       possible_moves = []
       moves = black_pawn.moves
       expect(moves.sort).to eq(possible_moves.sort)
@@ -93,7 +93,7 @@ describe Pawn do
       white_pawn.instance_variable_set(:@board, board)
       white_pawn.instance_variable_set(:@position, start_postion)
       white_pawn.instance_variable_set(:@moved, true)
-      allow(board).to receive(:element).and_return(nil, black_piece, black_piece)
+      allow(board).to receive(:at).and_return(nil, black_piece, black_piece)
       allow(black_piece).to receive(:color).and_return('black')
       possible_moves = [[4, 4], [3, 4], [5, 4]]
       moves = white_pawn.moves

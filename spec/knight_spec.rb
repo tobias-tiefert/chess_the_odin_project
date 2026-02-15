@@ -27,7 +27,7 @@ describe Knight do
         start_postion = [0, 0]
 
         knight.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[1, 2], [2, 1]]
         moves = knight.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
@@ -36,7 +36,7 @@ describe Knight do
       it 'finds all possible moves on the board for a posiotion in the middle' do
         start_postion = [4, 3]
         knight.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[2, 2], [2, 4], [3, 1], [3, 5], [5, 1], [5, 5], [6, 2], [6, 4]]
         moves = knight.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
@@ -50,7 +50,7 @@ describe Knight do
       it 'it moves on fields with the enemy (to strike)' do
         start_postion = [4, 3]
         knight.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[2, 2], [2, 4], [3, 1], [3, 5], [5, 1], [5, 5], [6, 2], [6, 4]]
         moves = knight.moves(start_postion)
@@ -59,7 +59,7 @@ describe Knight do
       it "doesn't move when there are other pieces from the same color on the target field" do
         start_postion = [4, 3]
         knight.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = knight.moves(start_postion)

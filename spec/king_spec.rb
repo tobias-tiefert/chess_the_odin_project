@@ -27,7 +27,7 @@ describe King do
         start_postion = [0, 0]
 
         king.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[1, 1], [0, 1], [1, 0]]
         moves = king.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
@@ -36,7 +36,7 @@ describe King do
       it 'finds all possible moves on the board for a posiotion in the middle' do
         start_postion = [4, 3]
         king.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[3, 2], [4, 2], [5, 2], [5, 3], [5, 4], [4, 4], [3, 4], [3, 3]]
         moves = king.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
@@ -50,7 +50,7 @@ describe King do
       it 'it moves on fields with the enemy (to strike)' do
         start_postion = [4, 3]
         king.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 2], [3, 4], [5, 2], [5, 4],
                           [3, 3], [5, 3], [4, 2], [4, 4]]
@@ -60,7 +60,7 @@ describe King do
       it "doesn't move when there are other pieces from the same color on the target field" do
         start_postion = [4, 3]
         king.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = king.moves(start_postion)

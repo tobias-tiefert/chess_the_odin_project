@@ -27,7 +27,7 @@ describe Queen do
         start_postion = [0, 0]
 
         queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7],
                           [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
                           [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]
@@ -38,7 +38,7 @@ describe Queen do
       it 'finds all possible moves on the board for a posiotion in the middle' do
         start_postion = [4, 3]
         queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[0, 7], [1, 0], [1, 6], [2, 1], [2, 5], [3, 2],
                           [3, 4], [5, 2], [5, 4], [6, 1], [6, 5], [7, 0], [7, 6],
                           [0, 3], [1, 3], [2, 3], [3, 3], [5, 3], [6, 3], [7, 3],
@@ -49,7 +49,7 @@ describe Queen do
       it 'finds all possible moves on the board for a posiotion at the side' do
         start_postion = [0, 2]
         queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(nil)
+        allow(board).to receive(:at).and_return(nil)
         possible_moves = [[0, 0], [0, 1], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [1, 1], [1, 2], [1, 3], [2, 0],
                           [2, 2], [2, 4], [3, 2], [3, 5], [4, 2], [4, 6], [5, 2], [5, 7], [6, 2], [7, 2]]
         moves = queen.moves(start_postion)
@@ -64,7 +64,7 @@ describe Queen do
       it 'only makes one move when there is an opponent arround (to strike)' do
         start_postion = [4, 3]
         queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 2], [3, 4], [5, 2], [5, 4],
                           [3, 3], [5, 3], [4, 2], [4, 4]]
@@ -74,7 +74,7 @@ describe Queen do
       it "doesn't move when there are other pieces from the same color arround" do
         start_postion = [4, 3]
         queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:element).and_return(piece)
+        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = queen.moves(start_postion)

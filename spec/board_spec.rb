@@ -26,14 +26,14 @@ describe Board do
       expect(test_board[5].all?(&:nil?)).to be true
     end
   end
-  describe '#element' do
+  describe '#at' do
     test_positions = [
-      [nil, nil, 4, nil],
+      [89, nil, 4, nil],
       [6, 7, 'hallo', nil]
     ]
     it 'returns an element' do
       board.instance_variable_set(:@positions, test_positions)
-      element = board.element([1, 2])
+      element = board.at([2, 1])
       expect(element).to eq('hallo')
     end
   end
@@ -43,7 +43,7 @@ describe Board do
       allow(rook).to receive(:board=)
       allow(rook).to receive(:position=)
       board.put_on_board(rook, [0, 0])
-      expect(board.element([0, 0])).to be rook
+      expect(board.at([0, 0])).to be rook
     end
   end
 end
