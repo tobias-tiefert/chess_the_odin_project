@@ -1,9 +1,13 @@
 # frozen_string_literal: true
 
+require_relative 'translate'
+
 # super class for all the pieces in the chess game
 class Piece
   attr_reader :color, :token, :name
   attr_writer :board, :position
+
+  include TRANSLATE
 
   WHITE_TOKEN = '♙'
   BLACK_TOKEN = '♟'
@@ -43,7 +47,7 @@ class Piece
   end
 
   def move(target)
-    moves.include?(target) ? perform_move(target) : no_valid_move_message
+    moves.include?(target) ? perform_move(target) : no_valid_move_message(target)
   end
 
   private
@@ -65,7 +69,7 @@ class Piece
     puts "The #{@color} #{@name.downcase} took the #{target.color} #{target.name.downcase}"
   end
 
-  def no_valid_move_message
-    puts "The #{@color} #{@name.downcase} can't move there"
+  def no_valid_move_message(target)
+    puts "The #{@color} #{@name.downcase} can't move form #{translate_back(@position)} to #{translate_back(target)}"
   end
 end

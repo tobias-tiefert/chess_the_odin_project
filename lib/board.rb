@@ -51,6 +51,17 @@ class Board
     set_up_pieces('black')
   end
 
+  def snapshot
+    output = ''
+    @positions.each do |row|
+      row.each do |field|
+        field_sign = field.nil? ? '-' : field.token
+        output += field_sign
+      end
+    end
+    output
+  end
+
   private
 
   def set_up_pieces(color)

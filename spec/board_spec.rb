@@ -89,4 +89,12 @@ describe Board do
       expect(bishops.all? { |element| element.is_a?(Bishop) }).to be(true)
     end
   end
+
+  describe '#snapshot' do
+    let(:rook) { double('rook') }
+    it 'creats a snaptshot of the position of the pieces as a string' do
+      allow(:rook).to receive(:token).and_return('♜')
+      
+    end
+  end
 end

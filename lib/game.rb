@@ -15,6 +15,18 @@ class Game
     @winner = nil
   end
 
+  def start
+    @board.set_up
+    play until game_over?
+    result
+  end
+
+  def play
+    @board.draw_board
+    @current_player.decide
+    switch_players
+  end
+
   def game_over?
     @winner.nil? ? false : true
   end

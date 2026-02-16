@@ -15,11 +15,11 @@ class Player
   end
 
   def decide
-    positions_before = @board.position_snapshot
+    positions_before = @board.snapshot
     puts "#{@name} make your move"
     loop do
       make_move(gets.chomp.downcase)
-      break if @board.position_snapshot != positions_before
+      break if @board.snapshot != positions_before
 
       puts 'Please choose again'
     end
