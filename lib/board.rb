@@ -1,5 +1,12 @@
 # frozen_string_literal: true
 
+require_relative 'pawn'
+require_relative 'king'
+require_relative 'queen'
+require_relative 'rook'
+require_relative 'knight'
+require_relative 'bishop'
+
 # class that represents the board in the chess game
 class Board
   COLUMNS = 8
@@ -39,7 +46,44 @@ class Board
     piece.board = self
   end
 
+  def set_up
+    set_up_pieces('white')
+    set_up_pieces('black')
+  end
+
   private
+
+  def set_up_pieces(color)
+    side = color == 'white' ? 7 : 0
+    put_on_board(King.new(color), [4, side])
+    put_on_board(Queen.new(color), [3, side])
+    set_up_rooks(color, side)
+    set_up_knights(color, side)
+    set_up_bishops(color, side)
+    set_up_pawns(color)
+  end
+
+  def set_up_rooks(color, side)
+    put_on_board(Rook.new(color), [0, side])
+    put_on_board(Rook.new(color), [7, side])
+  end
+
+  def set_up_knights(color, side)
+    put_on_board(Knight.new(color), [1, side])
+    put_on_board(Knight.new(color), [6, side])
+  end
+
+  def set_up_bishops(color, side)
+    put_on_board(Bishop.new(color), [2, side])
+    put_on_board(Bishop.new(color), [5, side])
+  end
+
+  def set_up_pawns(color)
+    pawn_line = color == 'white' ? 6 : 1
+    8.times do |count|
+      put_on_board(Pawn.new(color), [count, pawn_line])
+    end
+  end
 
   def draw_row(row, index)
     print '    ' # just to indent everything so it looks better in the terminal
