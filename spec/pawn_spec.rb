@@ -108,7 +108,7 @@ describe Pawn do
     before(:each) do
       pawn.board = board
       pawn.position = [4, 4]
-      allow(pawn).to receive(:puts)
+      # allow(pawn).to receive(:puts)
     end
 
     it "doesn't move the piece if given a target that shouldn't be reached" do
@@ -141,5 +141,19 @@ describe Pawn do
       expect(pawn).to receive(:puts).with(strike_message)
       pawn.move([3, 3])
     end
+    it 'calls promote if the pawn is on the promote line' do
+      empty_positions = [[], [], [], [], [], [], [], []]
+      allow(board).to receive(:at).and_return(nil)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      expect(pawn).to receive(:promote)
+      pawn.move([4, 3])
+      pawn.move([4, 2])
+      pawn.move([4, 1])
+      pawn.move([4, 0])
+    end
+  end
+
+  describe '#promote' do 
+    
   end
 end

@@ -7,6 +7,7 @@ require_relative 'lib/piece'
 require_relative 'lib/queen'
 require_relative 'lib/bishop'
 require_relative 'lib/pawn'
+require_relative 'lib/knight'
 
 board = Board.new
 
@@ -19,13 +20,22 @@ black_pawn = Pawn.new('black')
 board.put_on_board(white_pawn, [1, 2])
 board.put_on_board(black_pawn, [2, 1])
 board.draw_board
-# white_pawn.move([4, 3])
-black_pawn.move([1, 2])
+white_pawn.move([1, 1])
+# white_pawn.move([1, 0])
+
+# black_pawn.move([1, 2])
 board.draw_board
-black_pawn.move([1, 4])
+black_pawn.move([2, 3])
+black_pawn.move([2, 4])
+black_pawn.move([2, 5])
+board.draw_board
+black_pawn.move([2, 7])
+black_pawn.move([2, 7])
+
+# board.put_on_board(black_pawn, [2, 0])
 # print queen.moves
 # queen.move([7, 4])
-# board.draw_board
+board.draw_board
 # bishop.move([3, 0])
 # board.positions.each_with_index { |position, index| puts "#{position} , index: #{index}" }
 
