@@ -29,7 +29,7 @@ black_pawn.move([2, 3])
 black_pawn.move([2, 4])
 black_pawn.move([2, 5])
 board.draw_board
-black_pawn.move([2, 7])
+black_pawn.move([2, 6])
 black_pawn.move([2, 7])
 
 # board.put_on_board(black_pawn, [2, 0])
@@ -40,3 +40,8 @@ board.draw_board
 # board.positions.each_with_index { |position, index| puts "#{position} , index: #{index}" }
 
 # rint bishop.moves
+board.positions.each do |element|
+  element.flatten.compact.each do |field|
+    print "#{field.color} #{field.name} \n"
+  end
+end

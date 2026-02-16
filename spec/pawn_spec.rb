@@ -108,7 +108,7 @@ describe Pawn do
     before(:each) do
       pawn.board = board
       pawn.position = [4, 4]
-      # allow(pawn).to receive(:puts)
+      allow(pawn).to receive(:puts)
     end
 
     it "doesn't move the piece if given a target that shouldn't be reached" do
@@ -153,7 +153,51 @@ describe Pawn do
     end
   end
 
-  describe '#promote' do 
-    
+  describe '#promote' do
+    subject(:pawn) { described_class.new('white') }
+    let(:board) { double('board') }
+    before(:each) do
+      pawn.board = board
+      pawn.position = [4, 1]
+    end
+    it 'displays the promote message' do
+      empty_positions = [[], [], [], [], [], [], [], []]
+      allow(board).to receive(:at).and_return(nil)
+      allow(board).to receive(:draw_board)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      allow(pawn).to receive(:gets).and_return('q')
+      allow(board).to receive(:put_on_board)
+      promote_message = <<~HEREDOC
+        Your pawn get's promoted
+        Tpye [Q] to promote to a queen
+        Tpye [R] to promote to a rook
+        Tpye [B] to promote to a bishop
+        Tpye [K] to promote to a knight
+      HEREDOC
+      expect(pawn).to receive(:puts).with(promote_message)
+      pawn.move([4, 0])
+    end
+    it 'displays the valid input message if wrong input is entered' do
+      empty_positions = [[], [], [], [], [], [], [], []]
+      allow(board).to receive(:at).and_return(nil)
+      allow(board).to receive(:draw_board)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      allow(pawn).to receive(:gets).and_return('t', 'q')
+      allow(board).to receive(:put_on_board)
+      allow(pawn).to receive(:puts)
+      valid_input_message = 'Please choose a valid option'
+      expect(pawn).to receive(:puts).with(valid_input_message).once
+      pawn.move([4, 0])
+    end
+    it "calls the put_on_board method with a new queen and the pawn's postion as parameters" do
+      empty_positions = [[], [], [], [], [], [], [], []]
+      allow(board).to receive(:at).and_return(nil)
+      allow(board).to receive(:draw_board)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      allow(pawn).to receive(:gets).and_return('q')
+      allow(pawn).to receive(:puts)
+      expect(board).to receive(:put_on_board).with(kind_of(Queen), [4, 0])
+      pawn.move([4, 0])
+    end
   end
 end

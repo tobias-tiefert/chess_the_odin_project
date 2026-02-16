@@ -64,16 +64,6 @@ class Pawn < Piece
     move_position if legal_move?(move_position)
   end
 
-  def legal_move?(position)
-    field = @board.at(position)
-    on_the_board?(position) && field.nil?
-  end
-
-  def legal_strike?(position)
-    field = @board.at(position)
-    on_the_board?(position) && field.nil? == false && field.color != @color
-  end
-
   def move(target)
     super
     promote if @position[1] == @promote_line
@@ -87,6 +77,18 @@ class Pawn < Piece
     @board.draw_board
     puts PROMOTE_MESSAGE
     @board.put_on_board(new_piece(user_input), @position)
+  end
+
+  private
+
+  def legal_move?(position)
+    field = @board.at(position)
+    on_the_board?(position) && field.nil?
+  end
+
+  def legal_strike?(position)
+    field = @board.at(position)
+    on_the_board?(position) && field.nil? == false && field.color != @color
   end
 
   def new_piece(user_input)
