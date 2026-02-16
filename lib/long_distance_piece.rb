@@ -15,7 +15,7 @@ class LongDistancePiece < Piece
     output = []
     @directions.each do |direction|
       first_step = [position[0] + direction[0], position[1] + direction[1]]
-      output += moves_recursive(first_step, direction)
+      output += moves_recursive(first_step, direction) if on_the_board?(first_step)
     end
     output
   end

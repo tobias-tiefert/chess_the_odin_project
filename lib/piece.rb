@@ -29,6 +29,8 @@ class Piece
     output = []
     directions.each do |direction|
       new_position = new_position(position, direction)
+      next unless on_the_board?(new_position)
+
       field_element_color = @board.at(new_position).nil? ? 'empty' : @board.at(new_position).color
 
       output << new_position if on_the_board?(new_position) && field_element_color != @color
