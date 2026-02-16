@@ -22,6 +22,7 @@ board.draw_board
 # white_pawn.move([4, 3])
 black_pawn.move([1, 2])
 board.draw_board
+black_pawn.move([1, 4])
 # print queen.moves
 # queen.move([7, 4])
 # board.draw_board

@@ -22,7 +22,6 @@ class Pawn < Piece
     @name = 'Pawn'
     @directions = get_directions(@color)
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
-    @moved = false
   end
 
   def get_directions(color)

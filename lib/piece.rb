@@ -7,12 +7,14 @@ class Piece
 
   WHITE_TOKEN = '♙'
   BLACK_TOKEN = '♟'
+
   def initialize(color = 'white', board = nil)
     @name = 'Piece'
     @color = color
     @position = nil
     @board = board
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
+    @moved = false
   end
 
   def create_token(color, token1, token2)
@@ -39,16 +41,29 @@ class Piece
   end
 
   def move(target)
-    if moves.include?(target)
-      target_field = @board.at(target)
-      @board.positions[@position[1]][@position[0]] = nil
-      @position = target
-      @board.positions[target[1]][target[0]] = self
-      unless target_field.nil?
-        puts "The #{@color} #{@name.downcase} took the #{target_field.color} #{target_field.name.downcase}"
-      end
-    else
-      puts "The #{@color} #{@name.downcase} can't move there"
-    end
+    moves.include?(target) ? perform_move(target) : no_valid_move_message
+  end
+
+  private
+
+  def perform_move(target)
+    target_field = @board.at(target)
+    update_board(target)
+    strike_message(target_field) unless target_field.nil?
+    @moved = true
+  end
+
+  def update_board(target)
+    @board.positions[@position[1]][@position[0]] = nil
+    @position = target
+    @board.positions[target[1]][target[0]] = self
+  end
+
+  def strike_message(target)
+    puts "The #{@color} #{@name.downcase} took the #{target.color} #{target.name.downcase}"
+  end
+
+  def no_valid_move_message
+    puts "The #{@color} #{@name.downcase} can't move there"
   end
 end

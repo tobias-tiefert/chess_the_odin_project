@@ -12,6 +12,5 @@ class Rook < LongDistancePiece
     @name = 'Rook'
     @directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
-    @moved = false
   end
 end

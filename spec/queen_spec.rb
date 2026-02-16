@@ -82,4 +82,47 @@ describe Queen do
       end
     end
   end
+
+  describe '#move' do
+    subject(:queen) { described_class.new('white') }
+    let(:board) { double('board') }
+    let(:enemy_piece) { double('piece') }
+
+    before(:each) do
+      queen.board = board
+      queen.position = [4, 4]
+      allow(queen).to receive(:puts)
+    end
+
+    it "doesn't move the piece if given a target that shouldn't be reached" do
+      allow(board).to receive(:at).and_return(nil)
+      queen.move([3, 2])
+      position_after = queen.instance_variable_get(:@position)
+      expect(position_after).to eq [4, 4]
+    end
+    it "displays a message, if the move isn't a valid move" do
+      allow(board).to receive(:at).and_return(nil)
+      no_valid_move_message = "The white queen can't move there"
+      expect(queen).to receive(:puts).with(no_valid_move_message)
+      queen.move([3, 2])
+    end
+    it 'moves the piece to the target if it is a valid move' do
+      empty_positions = [[], [], [], [], [], [], [], []]
+      allow(board).to receive(:at).and_return(nil)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      queen.move([3, 3])
+      position_after = queen.instance_variable_get(:@position)
+      expect(position_after).to eq [3, 3]
+    end
+    it 'diplays the strike message if the piece takes another piece with the move' do
+      empty_positions = [[], [], [], [nil, nil, nil, enemy_piece], [], [], [], []]
+      allow(board).to receive(:at).and_return(enemy_piece)
+      allow(board).to receive(:positions).and_return(empty_positions)
+      allow(enemy_piece).to receive(:color).and_return('black')
+      allow(enemy_piece).to receive(:name).and_return('bishop')
+      strike_message = 'The white queen took the black bishop'
+      expect(queen).to receive(:puts).with(strike_message)
+      queen.move([3, 3])
+    end
+  end
 end
