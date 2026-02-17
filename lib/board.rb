@@ -62,6 +62,13 @@ class Board
     output
   end
 
+  def under_attack?(field, color)
+  end
+
+  def all(color)
+    @positions.flatten.compact.select { |piece| piece.color == color }
+  end
+
   private
 
   def set_up_pieces(color)
