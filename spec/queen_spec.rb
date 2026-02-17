@@ -23,7 +23,7 @@ describe Queen do
     context 'when on an empty field' do
       subject(:queen) { described_class.new('white') }
       let(:board) { double('board') }
-      it 'finds all possible moves on the board for a corner position' do
+      it 'finds all possible moves on the board for the top left corner position' do
         start_postion = [0, 0]
 
         queen.instance_variable_set(:@board, board)
@@ -31,6 +31,17 @@ describe Queen do
         possible_moves = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5], [6, 6], [7, 7],
                           [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7],
                           [1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], [7, 0]]
+        moves = queen.moves(start_postion)
+        expect(moves.sort).to eq(possible_moves.sort)
+      end
+      it 'finds all possible moves on the board for the bottom right corner position' do
+        start_postion = [7, 7]
+
+        queen.instance_variable_set(:@board, board)
+        allow(board).to receive(:at).and_return(nil)
+        possible_moves = [[7, 6], [7, 5], [7, 4], [7, 3], [7, 2], [7, 1], [7, 0],
+                          [6, 7], [5, 7], [4, 7], [3, 7], [2, 7], [1, 7], [0, 7],
+                          [6, 6], [5, 5], [4, 4], [3, 3], [2, 2], [1, 1], [0, 0]]
         moves = queen.moves(start_postion)
         expect(moves.sort).to eq(possible_moves.sort)
       end
@@ -102,7 +113,7 @@ describe Queen do
     end
     it "displays a message, if the move isn't a valid move" do
       allow(board).to receive(:at).and_return(nil)
-      no_valid_move_message = "The white queen can't move there"
+      no_valid_move_message = "The white queen can't move form e4 to d6"
       expect(queen).to receive(:puts).with(no_valid_move_message)
       queen.move([3, 2])
     end

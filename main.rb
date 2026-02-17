@@ -13,7 +13,12 @@ require_relative 'lib/game'
 game = Game.new
 game.start
 board = Board.new
-knight = Knight.new('white')
-board.put_on_board(knight, [4, 6])
+board.set_up
 board.draw_board
-puts board.position_snapshot
+# queen = Queen.new
+# knight = Knight.new('white')
+# board.put_on_board(knight, [4, 6])
+# board.put_on_board(queen, [7, 7])
+# board.draw_board
+# print queen.moves
+puts board.snapshot.delete('-')

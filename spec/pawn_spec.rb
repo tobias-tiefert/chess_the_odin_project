@@ -119,7 +119,7 @@ describe Pawn do
     end
     it "displays a message, if the move isn't a valid move" do
       allow(board).to receive(:at).and_return(nil)
-      no_valid_move_message = "The white pawn can't move there"
+      no_valid_move_message = "The white pawn can't move form e4 to d5"
       expect(pawn).to receive(:puts).with(no_valid_move_message)
       pawn.move([3, 3])
     end

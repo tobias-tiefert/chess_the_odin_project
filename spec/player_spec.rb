@@ -33,4 +33,38 @@ describe Player do
       expect(position).to eq('d4')
     end
   end
+
+  describe '#decide' do
+    let(:board) { double('board') }
+    let(:knight) { double('knight') }
+    before(:each) do
+      player.instance_variable_set(:@board, board)
+      allow(board).to receive(:at).and_return(knight)
+      allow(knight).to receive(:color).and_return('white')
+      allow(player).to receive(:puts)
+    end
+    it 'makes a move if given an field -> field input' do
+      input = 'b1 -> a3'
+      allow(board).to receive(:snapshot).and_return('1', '2')
+      allow(player).to receive(:gets).and_return(input)
+      expect(knight).to receive(:move).with([0, 5])
+      player.decide
+    end
+    it "doesn't make a move if given an field -> field input" do
+      input = 'b1 -> b3'
+      allow(board).to receive(:snapshot).and_return('1', '2')
+      allow(player).to receive(:gets).and_return(input)
+      expect(knight).to receive(:move).with([1, 5])
+      player.decide
+    end
+    it 'displays the error message if an invalid input is made' do
+      error_message = 'Please choose again'
+      input = 'b1 -> b3'
+      allow(board).to receive(:snapshot).and_return('1', '1', '2')
+      allow(player).to receive(:gets).and_return(input)
+      allow(knight).to receive(:move)
+      expect(player).to receive(:puts).with(error_message).once
+      player.decide
+    end
+  end
 end

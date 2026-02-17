@@ -92,9 +92,39 @@ describe Board do
 
   describe '#snapshot' do
     let(:rook) { double('rook') }
-    it 'creats a snaptshot of the position of the pieces as a string' do
-      allow(:rook).to receive(:token).and_return('♜')
-      
+    let(:queen) { double('queen') }
+    let(:knight) { double('knight') }
+    it "creats a snaptshot of the board's positions as a string | one piece" do
+      allow(rook).to receive(:token).and_return('♜')
+      test_positions = [[nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, rook]]
+      board.positions = test_positions
+      expected_result = '---------------------------------------------------------------♜'
+      snapshot = board.snapshot
+      expect(snapshot).to eq expected_result
+    end
+    it "creats a snaptshot of the board's positions as a string | three pieces" do
+      allow(rook).to receive(:token).and_return('♜')
+      allow(queen).to receive(:token).and_return('♛')
+      allow(knight).to receive(:token).and_return('♘')
+      test_positions = [[queen, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, knight, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, rook]]
+      board.positions = test_positions
+      expected_result = '♛--------------------------♘-----------------------------------♜'
+      snapshot = board.snapshot
+      expect(snapshot).to eq expected_result
     end
   end
 end

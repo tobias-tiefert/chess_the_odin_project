@@ -23,7 +23,7 @@ class Game
 
   def play
     @board.draw_board
-    @current_player.decide
+    result = @current_player.decide
     switch_players
   end
 
