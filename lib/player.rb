@@ -4,7 +4,7 @@ require_relative 'translate'
 
 # class that represents the players of the chess game
 class Player
-  attr_reader :name, :color
+  attr_reader :name, :color, :king
 
   include TRANSLATE
 
@@ -12,6 +12,7 @@ class Player
     @name = name
     @color = color
     @board = board
+    @king = King.new(color)
   end
 
   def decide
@@ -24,6 +25,10 @@ class Player
 
       puts 'Please choose again'
     end
+  end
+
+  def check?
+    @board.under_attack?(@king.position, @color)
   end
 
   private

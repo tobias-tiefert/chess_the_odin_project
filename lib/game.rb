@@ -5,8 +5,10 @@ require_relative 'player'
 
 # class that represents the chess game
 class Game
+  attr_reader :players
+
   def initialize
-    @board = Board.new
+    @board = Board.new(self)
     @players = [
       Player.new('Player 1', 'white', @board),
       Player.new('Player 2', 'black', @board)
@@ -23,7 +25,8 @@ class Game
 
   def play
     @board.draw_board
-    result = @current_player.decide
+    puts "#{@current_player.name} you are in check" if @current_player.check?
+    @current_player.decide
     switch_players
   end
 

@@ -10,8 +10,8 @@ require_relative 'lib/pawn'
 require_relative 'lib/knight'
 require_relative 'lib/game'
 
-# game = Game.new
-# game.start
+game = Game.new
+game.start
 board = Board.new
 # board.set_up
 # board.draw_board

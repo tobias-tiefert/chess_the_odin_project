@@ -5,7 +5,8 @@ require_relative 'translate'
 # super class for all the pieces in the chess game
 class Piece
   attr_reader :color, :token, :name
-  attr_writer :board, :position
+  attr_writer :board
+  attr_accessor :position
 
   include TRANSLATE
 

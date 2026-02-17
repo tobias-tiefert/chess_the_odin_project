@@ -17,7 +17,8 @@ class Board
 
   attr_accessor :positions
 
-  def initialize
+  def initialize(game = nil)
+    @game = game
     @positions = initialize_positions
   end
 
@@ -78,12 +79,21 @@ class Board
 
   def set_up_pieces(color)
     side = color == 'white' ? 7 : 0
-    put_on_board(King.new(color), [4, side])
+    set_up_king(color, side)
     put_on_board(Queen.new(color), [3, side])
     set_up_rooks(color, side)
     set_up_knights(color, side)
     set_up_bishops(color, side)
     set_up_pawns(color)
+  end
+
+  def set_up_king(color, side)
+    king = @game.nil? ? King.new(color) : game_king(color)
+    put_on_board(king, [4, side])
+  end
+
+  def game_king(color)
+    color == 'white' ? @game.players[0].king : @game.players[1].king
   end
 
   def set_up_rooks(color, side)
