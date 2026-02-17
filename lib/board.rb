@@ -60,11 +60,18 @@ class Board
     output
   end
 
+  # Hier weitermachen !!iiiifdasdsafö fdaf
   def under_attack?(field, color)
+    opponent_color = color == 'white' ? 'black' : 'white'
+    opponent_pieces = all(opponent_color)
+    opponent_pieces.each do |piece|
+      return true if piece.moves.include?(field)
+    end
+    false
   end
 
-  def all(color)
-    @positions.flatten.compact.select { |piece| piece.color == color }
+  def all(color = nil)
+    color.nil? ? @positions.flatten.compact : @positions.flatten.compact.select { |piece| piece.color == color }
   end
 
   private

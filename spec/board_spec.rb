@@ -173,6 +173,20 @@ describe Board do
       expectation = [black_king, black_pawn1, black_pawn2]
       expect(result).to eq expectation
     end
+    it 'returns all pieces when no argument is given' do
+      test_positions = [[white_queen, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, white_knight, nil, nil, nil, nil],
+                        [nil, nil, black_king, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn1, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn2, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, white_rook]]
+      board.positions = test_positions
+      result = board.all
+      expectation = [white_queen, white_knight, black_king, black_pawn1, black_pawn2, white_rook]
+      expect(result).to eq expectation
+    end
     it 'returns an empty array if the positions are empty' do
       test_positions = [[nil, nil, nil, nil, nil, nil, nil, nil],
                         [nil, nil, nil, nil, nil, nil, nil, nil],
@@ -190,13 +204,35 @@ describe Board do
   end
 
   describe '#under_attack?' do
-    context 'when a field is under attack' do
-      xit 'returns true' do
-      end
-      xit 'returns the field that attacks' do
-      end
+    let(:white_queen) { double('queen') }
+    let(:black_rook) { double('rook') }
+    before(:each) do
+      test_positions = [[black_rook, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, white_queen]]
+      queen_moves = [[7, 6], [7, 5], [7, 4], [7, 3], [7, 2], [7, 1], [7, 0], [6, 7], [5, 7], [4, 7], [3, 7], [2, 7],
+                     [1, 7], [0, 7], [6, 6], [5, 5], [4, 4], [3, 3], [2, 2], [1, 1], [0, 0]]
+      rook_moves = [[0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7], [1, 0], [2, 0], [3, 0], [4, 0], [5, 0],
+                    [6, 0], [7, 0]]
+      board.positions = test_positions
+      allow(white_queen).to receive(:color).and_return('white')
+      allow(black_rook).to receive(:color).and_return('black')
+      allow(white_queen).to receive(:moves).and_return(queen_moves)
+      allow(black_rook).to receive(:moves).and_return(rook_moves)
     end
-    context 'when a field is not under attack' do
+    it 'returns true if a field is under attack' do
+      expect(board.under_attack?([0, 0], 'black')).to be true
+    end
+    it 'returns false if a field is not under attak, because the piece that could reach it has the wrong color' do
+      expect(board.under_attack?([0, 0], 'white')).to be false
+    end
+    it 'returns false if a field is not under attack' do
+      expect(board.under_attack?([7, 7], 'white')).to be false
     end
   end
 end
