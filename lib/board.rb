@@ -61,7 +61,61 @@ class Board
     output
   end
 
-  # Hier weitermachen !!iiiifdasdsafö fdaf
+  def copy_board(old_board = self)
+    new_board = Board.new
+    lines = lines(old_board.snapshot)
+    lines.each_with_index do |line, y_postion|
+      line.chars.each_with_index do |char, x_position|
+        next if char == '-'
+
+        element = revert_char(char)
+        new_board.put_on_board(element, [x_position, y_postion])
+      end
+    end
+    new_board
+  end
+
+  def revert_snapshot(snapshot)
+    lines = lines(snapshot)
+    output = [[], [], [], [], [], [], [], []]
+    lines.each_with_index do |line, y_postion|
+      line.chars.each_with_index do |char, x_position|
+        element = revert_char(char)
+        element.position = [x_position, y_postion] unless element.nil?
+        output[y_postion] << element
+      end
+    end
+    output
+  end
+
+  def revert_char(char)
+    case char
+    when '♜' then Rook.new('black')
+    when '♞' then Knight.new('black')
+    when '♝' then Bishop.new('black')
+    when '♛' then Queen.new('black')
+    when '♚' then King.new('black')
+    when '♟' then Pawn.new('black')
+    when '♖' then Rook.new('white')
+    when '♘' then Knight.new('white')
+    when '♗' then Bishop.new('white')
+    when '♕' then Queen.new('white')
+    when '♔' then King.new('white')
+    when '♙' then Pawn.new('white')
+    else nil
+    end
+  end
+
+  def lines(snapshot)
+    lines = []
+    8.times do
+      line = snapshot[0..7]
+      lines << line
+      snapshot = snapshot[8..snapshot.length]
+    end
+    lines
+  end
+
   def under_attack?(field, color)
     opponent_color = color == 'white' ? 'black' : 'white'
     opponent_pieces = all(opponent_color)

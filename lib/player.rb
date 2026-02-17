@@ -16,12 +16,13 @@ class Player
   end
 
   def decide
+    puts "#{@name} you are in check" if check?
     positions_before = @board.snapshot
     puts "#{@name} make your move\n"
     loop do
       input = gets.chomp.downcase
       make_move(input) if valid?(input)
-      break if @board.snapshot != positions_before
+      break if @board.snapshot != positions_before && check? == false
 
       puts 'Please choose again'
     end
@@ -32,6 +33,9 @@ class Player
   end
 
   private
+
+  def normal_decide
+  end
 
   def valid?(input)
     input.match?(/[a-h][1-8]\s?->\s?[a-h][1-8]/)

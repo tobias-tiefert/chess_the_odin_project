@@ -42,6 +42,7 @@ describe Player do
       allow(board).to receive(:at).and_return(knight)
       allow(knight).to receive(:color).and_return('white')
       allow(player).to receive(:puts)
+      allow(board).to receive(:under_attack?).and_return(false)
     end
     it 'makes a move if given an field -> field input' do
       input = 'b1 -> a3'

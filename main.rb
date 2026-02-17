@@ -10,8 +10,8 @@ require_relative 'lib/pawn'
 require_relative 'lib/knight'
 require_relative 'lib/game'
 
-game = Game.new
-game.start
+# game = Game.new
+# game.start
 board = Board.new
 # board.set_up
 # board.draw_board
@@ -32,6 +32,13 @@ puts 'old'
 board.draw_board
 print rook.moves
 
-puts board.under_attack?([7, 7], 'white')
+snapshot = board.snapshot
 
-puts board.snapshot.delete('-')
+puts snapshot
+
+new_board = board.copy_board
+
+king = King.new('black')
+new_board.put_on_board(king, [7, 3])
+new_board.draw_board
+puts new_board.under_attack?([0, 7], 'white')

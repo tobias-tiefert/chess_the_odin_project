@@ -25,7 +25,6 @@ class Game
 
   def play
     @board.draw_board
-    puts "#{@current_player.name} you are in check" if @current_player.check?
     @current_player.decide
     switch_players
   end
