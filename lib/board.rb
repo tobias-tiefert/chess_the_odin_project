@@ -53,11 +53,9 @@ class Board
 
   def snapshot
     output = ''
-    @positions.each do |row|
-      row.each do |field|
-        field_sign = field.nil? ? '-' : field.token
-        output += field_sign
-      end
+    @positions.flatten.each do |field|
+      field_sign = field.nil? ? '-' : field.token
+      output += field_sign
     end
     output
   end
