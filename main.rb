@@ -11,36 +11,18 @@ require_relative 'lib/knight'
 require_relative 'lib/game'
 
 game = Game.new
-game.start
 board = Board.new
+white_king = King.new('white')
+black_king = King.new('black')
+white_rook = Rook.new('white')
+black_rook = Rook.new('black')
+white_queen = Queen.new('white')
+black_queen = Queen.new('black')
 
-puts 'game is over (from main)'
-# board.set_up
-# board.draw_board
+board.put_on_board(white_king, [7, 7])
+board.put_on_board(black_king, [4, 0])
+board.put_on_board(black_queen, [6, 0])
+board.put_on_board(black_rook, [0, 6])
+board.put_on_board(white_rook, [2, 7])
 
-# queen = Queen.new
-# knight = Knight.new('white')
-# board.put_on_board(knight, [4, 6])
-# board.put_on_board(queen, [7, 7])
-# puts 'old board'
-# board.draw_board
-
-puts 'new board'
-
-rook = Rook.new('black')
-board.put_on_board(rook, [0, 0])
-puts 'new'
-puts 'old'
-board.draw_board
-print rook.moves
-
-snapshot = board.snapshot
-
-puts snapshot
-
-new_board = board.copy
-
-king = King.new('black')
-new_board.put_on_board(king, [7, 3])
-new_board.draw_board
-print new_board.king('black')
+game.start_test(board)

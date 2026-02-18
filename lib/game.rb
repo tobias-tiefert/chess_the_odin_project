@@ -24,6 +24,15 @@ class Game
     result
   end
 
+  def start_test(board)
+    @board = board
+    players[0].board = board
+    players[1].board = board
+
+    play until game_over?
+    result
+  end
+
   def play
     @board.draw_board
     @current_player.decide
@@ -51,7 +60,7 @@ end
 def check_winner
   other_player = @current_player == @players[0] ? @players[1] : @players[0]
   @winner = @current_player if other_player.checkmate?
-  return unless @current_player.stalemate?
+  return unless other_player.stalemate?
 
   @winner = false
   @draw_message = "It's a draw - stalemate"

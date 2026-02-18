@@ -5,6 +5,7 @@ require_relative 'translate'
 # class that represents the players of the chess game
 class Player
   attr_reader :name, :color, :king
+  attr_writer :board # only for test purpos - remove before going live
 
   include TRANSLATE
 
@@ -22,7 +23,7 @@ class Player
       make_move(input, @board) if valid?(input) && still_in_check?(input) == false
       break if @board.snapshot != positions_before
 
-      message_no_valid_decision
+      message_no_valid_decision(input)
     end
   end
 
@@ -55,8 +56,9 @@ class Player
     puts "#{@name} make your move\n"
   end
 
-  def message_no_valid_decision
-    puts "You can't make this move. You would still be in check" if check?
+  def message_no_valid_decision(input)
+    puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
+    puts "You can't make this move. You would be in check" if still_in_check?(input)
     puts 'Please choose again'
   end
 
@@ -73,10 +75,16 @@ class Player
   def make_move(user_input, board = @board)
     input = user_input.split('->')
     piece = board.at(translate(input[0].strip))
-    board == @board ? move_error_handling(piece, input) : piece.move_without_puts(translate(input[1].strip))
+    board == @board ? move(piece, input) : test_move(piece, input)
   end
 
-  def move_error_handling(piece, input)
+  def test_move(piece, input)
+    return if piece.nil?
+
+    piece.test_move(translate(input[1].strip))
+  end
+
+  def move(piece, input)
     if piece.nil?
       puts "There is nothing on #{input[0].strip}"
     elsif piece.color == @color

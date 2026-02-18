@@ -51,8 +51,8 @@ class Piece
     moves.include?(target) ? perform_move(target) : no_valid_move_message(target)
   end
 
-  def move_without_puts(target)
-    perform_move_without_puts(target) if moves.include?(target)
+  def test_move(target)
+    perform_test_move(target) if moves.include?(target)
   end
 
   private
@@ -64,7 +64,7 @@ class Piece
     @moved = true
   end
 
-  def perform_move_without_puts(target)
+  def perform_test_move(target)
     update_board(target)
     @moved = true
   end
