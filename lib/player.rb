@@ -18,13 +18,7 @@ class Player
   def decide
     positions_before = @board.snapshot
     message_before_decide
-    loop do
-      input = gets.chomp.downcase
-      make_move(input, @board) if valid?(input) && still_in_check?(input) == false
-      break if @board.snapshot != positions_before
-
-      message_no_valid_decision(input)
-    end
+    decision_loop(positions_before)
   end
 
   def check?
@@ -52,13 +46,17 @@ class Player
   private
 
   def message_before_decide
-    puts "\e[91m#{@name} you are in check\e[0m" if check?
+    puts "\n\e[91m#{@name} you are in check\e[0m" if check?
     puts "#{@name} make your move\n"
   end
 
   def message_no_valid_decision(input)
-    puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
-    puts "You can't make this move. You would be in check" if still_in_check?(input)
+    puts ' '
+    if valid?(input)
+      puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
+      puts "You can't make this move. You would be in check" if still_in_check?(input)
+    end
+
     puts 'Please choose again'
   end
 
@@ -91,6 +89,19 @@ class Player
       piece.move(translate(input[1].strip))
     else
       puts "\n#{@name} don't try to move a #{piece.color} piece. Your color is #{@color}"
+    end
+  end
+
+  def decision_loop(positions_before)
+    loop do
+      input = gets.chomp.downcase
+      return input if input.include?('resign') || input.include?('draw') || input.include?('save')
+
+      make_move(input, @board) if valid?(input) && !still_in_check?(input)
+
+      break if @board.snapshot != positions_before
+
+      message_no_valid_decision(input)
     end
   end
 end

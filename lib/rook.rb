@@ -4,6 +4,8 @@ require_relative 'long_distance_piece'
 
 # class that represents the rook piece in the chess game
 class Rook < LongDistancePiece
+  attr_reader :moved
+
   WHITE_TOKEN = '♖'
   BLACK_TOKEN = '♜'
 

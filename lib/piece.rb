@@ -4,7 +4,7 @@ require_relative 'translate'
 
 # super class for all the pieces in the chess game
 class Piece
-  attr_reader :color, :token, :name
+  attr_reader :color, :token, :name, :moved
   attr_writer :board
   attr_accessor :position
 
@@ -55,8 +55,6 @@ class Piece
     perform_test_move(target) if moves.include?(target)
   end
 
-  private
-
   def perform_move(target)
     target_field = @board.at(target)
     update_board(target)
@@ -64,9 +62,10 @@ class Piece
     @moved = true
   end
 
+  private
+
   def perform_test_move(target)
     update_board(target)
-    @moved = true
   end
 
   def update_board(target)

@@ -16,11 +16,12 @@ class Game
     @current_player = @players[0]
     @winner = nil
     @draw_message = "It's a draw"
+    @saveing = false
   end
 
   def start
     @board.set_up
-    play until game_over?
+    play until game_over? || @saving
     result
   end
 
@@ -35,8 +36,8 @@ class Game
 
   def play
     @board.draw_board
-    @current_player.decide
-    check_winner
+    result = @current_player.decide
+    check_result(result)
     switch_players
   end
 
@@ -52,16 +53,67 @@ class Game
 
   def result
     @board.draw_board
-    message = @winner == false ? "\e[96m#{@draw_message}\e[0m" : "\e[96mCheckmate - #{@winner.name} wins the game!\e[0m"
+    message = @winner == false ? "\n\e[96m#{@draw_message}\e[0m" : "\n\e[96m#{@win_message}\e[0m"
     puts message
   end
-end
 
-def check_winner
-  other_player = @current_player == @players[0] ? @players[1] : @players[0]
-  @winner = @current_player if other_player.checkmate?
-  return unless other_player.stalemate?
+  def check_result(result)
+    other_player = @current_player == @players[0] ? @players[1] : @players[0]
+    draw_stalemate(other_player)
+    win_checkmate(other_player)
+    win_resign(result, other_player)
+    propose_draw(result, other_player)
+    check_save(result)
+  end
 
-  @winner = false
-  @draw_message = "It's a draw - stalemate"
+  def propose_draw(result, other_player)
+    return unless result.nil? == false && result.include?('draw')
+
+    puts <<~HEREDOC
+      #{@current_player.name} proposes a draw.
+      Do you accept #{other_player.name}?
+      Tpye [Y] for: yes I accept
+      Tpye [N] for: no, I don't
+    HEREDOC
+    @winner = false if user_input == 'y'
+    return unless @winner.nil?
+
+    switch_players
+  end
+
+  def user_input
+    loop do
+      user_input = gets.chomp.downcase
+      return user_input if user_input.match?(/[yn]/) && user_input.length == 1
+
+      puts 'Please choose a valid option'
+    end
+  end
+
+  def check_save(result)
+    return unless result.nil? == false && result.include?('save')
+
+    puts 'saving'
+  end
+
+  def win_checkmate(other_player)
+    return unless other_player.checkmate?
+
+    @winner = @current_player
+    @win_message = "Checkmate - #{@winner.name} wins the game!"
+  end
+
+  def draw_stalemate(other_player)
+    return unless other_player.stalemate?
+
+    @winner = false
+    @draw_message = "It's a draw - stalemate"
+  end
+
+  def win_resign(result, other_player)
+    return unless result.nil? == false && result.include?('resign')
+
+    @winner = other_player
+    @win_message = "#{@current_player.name} resigns - #{@winner.name} wins the game"
+  end
 end
