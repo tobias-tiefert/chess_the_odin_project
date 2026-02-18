@@ -61,7 +61,7 @@ class Board
     output
   end
 
-  def copy_board(old_board = self)
+  def copy(old_board = self)
     new_board = Board.new
     lines = lines(old_board.snapshot)
     lines.each_with_index do |line, y_postion|
@@ -75,17 +75,8 @@ class Board
     new_board
   end
 
-  def revert_snapshot(snapshot)
-    lines = lines(snapshot)
-    output = [[], [], [], [], [], [], [], []]
-    lines.each_with_index do |line, y_postion|
-      line.chars.each_with_index do |char, x_position|
-        element = revert_char(char)
-        element.position = [x_position, y_postion] unless element.nil?
-        output[y_postion] << element
-      end
-    end
-    output
+  def king(color)
+    @positions.flatten.compact.select { |piece| piece.color == color && piece.is_a?(King) }.first
   end
 
   def revert_char(char)
@@ -102,7 +93,6 @@ class Board
     when '♕' then Queen.new('white')
     when '♔' then King.new('white')
     when '♙' then Pawn.new('white')
-    else nil
     end
   end
 
@@ -133,17 +123,12 @@ class Board
 
   def set_up_pieces(color)
     side = color == 'white' ? 7 : 0
-    set_up_king(color, side)
     put_on_board(Queen.new(color), [3, side])
+    put_on_board(King.new(color), [4, side])
     set_up_rooks(color, side)
     set_up_knights(color, side)
     set_up_bishops(color, side)
     set_up_pawns(color)
-  end
-
-  def set_up_king(color, side)
-    king = @game.nil? ? King.new(color) : game_king(color)
-    put_on_board(king, [4, side])
   end
 
   def game_king(color)

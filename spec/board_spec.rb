@@ -235,4 +235,49 @@ describe Board do
       expect(board.under_attack?([7, 7], 'white')).to be false
     end
   end
+  describe '#king' do
+    let(:white_knight) { double('knight') }
+    let(:white_queen) { double('queen') }
+    let(:white_rook) { double('rook') }
+    let(:white_king) { double('king') }
+    let(:black_king) { double('king') }
+    let(:black_pawn1) { double('pawn') }
+    let(:black_pawn2) { double('pawn') }
+
+    before(:each) do
+      allow(white_knight).to receive(:color).and_return('white')
+      allow(white_queen).to receive(:color).and_return('white')
+      allow(white_rook).to receive(:color).and_return('white')
+      allow(white_king).to receive(:color).and_return('white')
+      allow(black_king).to receive(:color).and_return('black')
+      allow(black_pawn1).to receive(:color).and_return('black')
+      allow(black_pawn2).to receive(:color).and_return('black')
+      allow(white_king).to receive(:is_a?).and_return(King)
+      allow(black_king).to receive(:is_a?).and_return(King)
+    end
+    it 'returns the white king' do
+      test_positions = [[white_queen, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, white_king, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, white_knight, nil, nil, nil, nil],
+                        [nil, nil, black_king, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn1, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn2, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, white_rook]]
+      board.positions = test_positions
+      expect(board.king('white')).to eq white_king
+    end
+    it 'returns the black king' do
+      test_positions = [[white_queen, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, white_king, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, white_knight, nil, nil, nil, nil],
+                        [nil, nil, black_king, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn1, nil, nil, nil, nil, nil],
+                        [nil, nil, black_pawn2, nil, nil, nil, nil, nil],
+                        [nil, nil, nil, nil, nil, nil, nil, white_rook]]
+      board.positions = test_positions
+      expect(board.king('black')).to eq black_king
+    end
+  end
 end

@@ -37,12 +37,16 @@ describe Player do
   describe '#decide' do
     let(:board) { double('board') }
     let(:knight) { double('knight') }
+    let(:king) { double('king') }
     before(:each) do
       player.instance_variable_set(:@board, board)
       allow(board).to receive(:at).and_return(knight)
       allow(knight).to receive(:color).and_return('white')
       allow(player).to receive(:puts)
-      allow(board).to receive(:under_attack?).and_return(false)
+      allow(board).to receive(:under_attack?).and_return(board)
+      allow(board).to receive(:copy).and_return(board)
+      allow(board).to receive(:king).and_return(king)
+      allow(king).to receive(:position).and_return([0, 0])
     end
     it 'makes a move if given an field -> field input' do
       input = 'b1 -> a3'
@@ -66,6 +70,24 @@ describe Player do
       allow(knight).to receive(:move)
       expect(player).to receive(:puts).with(error_message).once
       player.decide
+    end
+  end
+
+  describe '#check?' do
+    let(:board) { double('board') }
+    let(:king) { double('king') }
+    before(:each) do
+      allow(board).to receive(:king).and_return(king)
+      allow(king).to receive(:position)
+      player.instance_variable_set(:@board, board)
+    end
+    it 'returns true, if a king is in check' do
+      allow(board).to receive(:under_attack?).and_return(true)
+      expect(player.check?).to be true
+    end
+    it 'returns false, if a king is not in check' do
+      allow(board).to receive(:under_attack?).and_return(false)
+      expect(player.check?).to be false
     end
   end
 end

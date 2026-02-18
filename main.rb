@@ -10,18 +10,20 @@ require_relative 'lib/pawn'
 require_relative 'lib/knight'
 require_relative 'lib/game'
 
-# game = Game.new
-# game.start
+game = Game.new
+game.start
 board = Board.new
+
+puts 'game is over (from main)'
 # board.set_up
 # board.draw_board
 
-queen = Queen.new
-knight = Knight.new('white')
-board.put_on_board(knight, [4, 6])
-board.put_on_board(queen, [7, 7])
-puts 'old board'
-board.draw_board
+# queen = Queen.new
+# knight = Knight.new('white')
+# board.put_on_board(knight, [4, 6])
+# board.put_on_board(queen, [7, 7])
+# puts 'old board'
+# board.draw_board
 
 puts 'new board'
 
@@ -36,9 +38,9 @@ snapshot = board.snapshot
 
 puts snapshot
 
-new_board = board.copy_board
+new_board = board.copy
 
 king = King.new('black')
 new_board.put_on_board(king, [7, 3])
 new_board.draw_board
-puts new_board.under_attack?([0, 7], 'white')
+print new_board.king('black')

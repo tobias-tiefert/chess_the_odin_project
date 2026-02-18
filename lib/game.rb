@@ -10,11 +10,12 @@ class Game
   def initialize
     @board = Board.new(self)
     @players = [
-      Player.new('Player 1', 'white', @board),
-      Player.new('Player 2', 'black', @board)
+      Player.new('White', 'white', @board),
+      Player.new('Black', 'black', @board)
     ]
     @current_player = @players[0]
     @winner = nil
+    @draw_message = "It's a draw"
   end
 
   def start
@@ -26,6 +27,7 @@ class Game
   def play
     @board.draw_board
     @current_player.decide
+    check_winner
     switch_players
   end
 
@@ -37,9 +39,20 @@ class Game
     @current_player = @current_player == @players[0] ? @players[1] : @players[0]
   end
 
+  private
+
   def result
     @board.draw_board
-    message = @winner == false ? "It's a draw" : "#{@winner.name} wins the game"
+    message = @winner == false ? "\e[96m#{@draw_message}\e[0m" : "\e[96mCheckmate - #{@winner.name} wins the game!\e[0m"
     puts message
   end
+end
+
+def check_winner
+  other_player = @current_player == @players[0] ? @players[1] : @players[0]
+  @winner = @current_player if other_player.checkmate?
+  return unless @current_player.stalemate?
+
+  @winner = false
+  @draw_message = "It's a draw - stalemate"
 end

@@ -51,12 +51,21 @@ class Piece
     moves.include?(target) ? perform_move(target) : no_valid_move_message(target)
   end
 
+  def move_without_puts(target)
+    perform_move_without_puts(target) if moves.include?(target)
+  end
+
   private
 
   def perform_move(target)
     target_field = @board.at(target)
     update_board(target)
     strike_message(target_field) unless target_field.nil?
+    @moved = true
+  end
+
+  def perform_move_without_puts(target)
+    update_board(target)
     @moved = true
   end
 
