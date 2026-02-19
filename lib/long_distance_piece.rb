@@ -24,9 +24,11 @@ class LongDistancePiece < Piece
 
   def moves_recursive(position, direction, output = [])
     field_element_color = @board.at(position).nil? ? 'empty' : @board.at(position).color
-    output << position if on_the_board?(position) && field_element_color != @color
+    if on_the_board?(position) && free_field?(field_element_color) || opponent_field?(field_element_color)
+      output << position
+    end
     new_position = [position[0] + direction[0], position[1] + direction[1]]
-    moves_recursive(new_position, direction, output) if on_the_board?(new_position) && field_element_color == 'empty'
+    moves_recursive(new_position, direction, output) if on_the_board?(new_position) && free_field?(field_element_color)
     output
   end
 end

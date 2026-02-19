@@ -16,6 +16,7 @@ class Piece
   def initialize(color = 'white', board = nil)
     @name = 'Piece'
     @color = color
+    @opponent_color = opponent_color
     @position = nil
     @board = board
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
@@ -38,9 +39,23 @@ class Piece
 
       field_element_color = @board.at(new_position).nil? ? 'empty' : @board.at(new_position).color
 
-      output << new_position if on_the_board?(new_position) && field_element_color != @color
+      if on_the_board?(new_position) && free_field?(field_element_color) || opponent_field?(field_element_color)
+        output << new_position
+      end
     end
     output.sort
+  end
+
+  def opponent_field?(field_element_color)
+    field_element_color == @opponent_color
+  end
+
+  def free_field?(field_element_color)
+    %w[empty dummy_black dummy_white].include?(field_element_color)
+  end
+
+  def opponent_color
+    @color == 'white' ? 'black' : 'white'
   end
 
   def new_position(position, position_change)

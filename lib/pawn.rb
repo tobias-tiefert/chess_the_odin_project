@@ -5,6 +5,7 @@ require_relative 'queen'
 require_relative 'bishop'
 require_relative 'rook'
 require_relative 'knight'
+require_relative 'dummy_pawn'
 
 # class that represents the pawn piece in the chess game
 class Pawn < Piece

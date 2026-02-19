@@ -23,6 +23,10 @@ describe King do
     context 'when on an empty field' do
       subject(:king) { described_class.new('white') }
       let(:board) { double('board') }
+
+      before(:each) do
+        king.instance_variable_set(:@moved, true)
+      end
       it 'finds all possible moves on the board for a corner position' do
         start_postion = [0, 0]
 
@@ -46,6 +50,9 @@ describe King do
       subject(:king) { described_class.new('white') }
       let(:board) { double('board') }
       let(:piece) { double('piece') }
+      before(:each) do
+        king.instance_variable_set(:@moved, true)
+      end
 
       it 'it moves on fields with the enemy (to strike)' do
         start_postion = [4, 3]
