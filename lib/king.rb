@@ -56,6 +56,7 @@ class King < Piece
     rook = @board.at([corner, line])
     perform_move([target, line])
     rook.perform_move([rook_target, line])
+    puts "\n#{@color.capitalize} is casteling to the #{side}"
   end
 
   def casteling_conditions(side)
