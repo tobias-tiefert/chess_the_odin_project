@@ -35,6 +35,7 @@ class Pawn < Piece
     @directions = get_directions(@color)
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @promote_line = get_promote_line(color)
+    @dummy_opponent_color = dummy_opponent_color
   end
 
   def get_directions(color)
@@ -84,12 +85,22 @@ class Pawn < Piece
 
   def legal_move?(position)
     field = @board.at(position)
-    on_the_board?(position) && field.nil?
+    field_color = field.nil? ? 'empty' : field.color
+    on_the_board?(position) && free_field?(field_color)
   end
 
   def legal_strike?(position)
     field = @board.at(position)
-    on_the_board?(position) && field.nil? == false && field.color != @color
+    field_color = field.nil? ? 'empty' : field.color
+    on_the_board?(position) && opponent_field?(field_color)
+  end
+
+  def dummy_opponent_color
+    @color == 'white' ? 'dummy_black' : 'dummy_white'
+  end
+
+  def opponent_field?(field_element_color)
+    [@opponent_color, @dummy_opponent_color].include?(field_element_color)
   end
 
   def new_piece(user_input)

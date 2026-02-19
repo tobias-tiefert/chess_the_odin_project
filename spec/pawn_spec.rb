@@ -25,6 +25,11 @@ describe Pawn do
     let(:board) { double('board') }
     let(:white_piece) { double('piece') }
     let(:black_piece) { double('piece') }
+
+    before(:each) do
+      allow(white_piece).to receive(:color)
+      allow(black_piece).to receive(:color)
+    end
     it 'finds the move and the long move positions for white on an empty field' do
       start_postion = [4, 6]
 
