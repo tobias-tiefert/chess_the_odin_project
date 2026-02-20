@@ -38,9 +38,9 @@ class Piece
       new_position = new_position(position, direction)
       next unless on_the_board?(new_position)
 
-      field_element_color = @board.at(new_position).nil? ? 'empty' : @board.at(new_position).color
+      target_field = @board.at(new_position)
 
-      if on_the_board?(new_position) && free_field?(field_element_color) || opponent_field?(@board.at(new_position))
+      if on_the_board?(new_position) && free_field?(target_field) || opponent_field?(target_field)
         output << new_position
       end
     end
@@ -48,11 +48,13 @@ class Piece
   end
 
   def opponent_field?(field_element)
+    return false if field_element.nil?
+
     field_element.color == @opponent_color && field_element.is_a?(Piece)
   end
 
-  def free_field?(field_element_color)
-    %w[empty dummy_black dummy_white].include?(field_element_color)
+  def free_field?(field_element)
+    field_element.nil? || field_element.is_a?(DummyPawn)
   end
 
   def opponent_color

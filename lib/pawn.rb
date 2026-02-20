@@ -71,7 +71,7 @@ class Pawn < Piece
   end
 
   def test_move(target)
-    moves.include?(target) ? perform_pawn_test_move(target) : no_valid_move_message(target)
+    perform_pawn_test_move(target) if moves.include?(target)
   end
 
   def perform_pawn_move(target)
@@ -125,6 +125,10 @@ class Pawn < Piece
     !field_element.nil? && field_element.color == @opponent_color
   end
 
+  def free_field?(field_element)
+    field_element.nil?
+  end
+
   def place_dummy(target)
     dummy_position = @color == 'white' ? [target[0], target[1] + 1] : [target[0], target[1] - 1]
     dummy = DummyPawn.new(target, @color)
@@ -139,9 +143,7 @@ class Pawn < Piece
   def legal_move?(position)
     return false unless on_the_board?(position)
 
-    field = @board.at(position)
-    field_color = field.nil? ? 'empty' : field.color
-    on_the_board?(position) && free_field?(field_color)
+    free_field?(@board.at(position))
   end
 
   def legal_strike?(position)
