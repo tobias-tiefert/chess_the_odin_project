@@ -65,14 +65,16 @@ class Pawn < Piece
     move_position if legal_move?(move_position)
   end
 
-  def move(target)
-    moves.include?(target) ? perform_pawn_move(target) : no_valid_move_message(target)
-    promote if @position[1] == @promote_line
+  def move(target, type = 'real')
+    if type == 'real'
+      moves.include?(target) ? perform_pawn_move(target) : no_valid_move_message(target)
+      promote if @position[1] == @promote_line
+    elsif moves.include?(target)
+      perform_pawn_test_move(target)
+    end
   end
 
-  def test_move(target)
-    perform_pawn_test_move(target) if moves.include?(target)
-  end
+  private
 
   def perform_pawn_move(target)
     target_field = @board.at(target)
@@ -114,8 +116,6 @@ class Pawn < Piece
     puts PROMOTE_MESSAGE
     @board.put_on_board(new_piece(user_input), @position)
   end
-
-  private
 
   def promote_line(color)
     color == 'white' ? 0 : 7

@@ -29,29 +29,25 @@ class King < Piece
     output.sort
   end
 
-  def move(target)
-    if @casteling_moves.include?(target) && @moved == false
-      casteling(target)
+  def move(target, type = 'real')
+    if @casteling_moves.include?(target) && @castled == false
+      casteling(target, type)
     else
-      super
+      super(target, type)
     end
-  end
-
-  def test_move(target)
-    super unless @casteling_moves.include?(target) && @moved == false
   end
 
   private
 
-  def casteling(target)
+  def casteling(target, type)
     if target == @casteling_moves[0] && casteling_conditions('left')
-      perform_casteling('left')
+      perform_casteling('left', type)
     elsif target == @casteling_moves[1] && casteling_conditions('right')
-      perform_casteling('right')
+      perform_casteling('right', type)
     end
   end
 
-  def perform_casteling(side)
+  def perform_casteling(side, type)
     line = @position[1]
     corner = side == 'left' ? 0 : 7
     target = side == 'left' ? @position[0] - 2 : @position[0] + 2
@@ -59,7 +55,7 @@ class King < Piece
     rook = @board.at([corner, line])
     perform_move([target, line])
     rook.perform_move([rook_target, line])
-    puts "\n#{@color.capitalize} is casteling to the #{side}"
+    puts "\n#{@color.capitalize} is casteling to the #{side}" if type == 'real'
     @castled = true
   end
 

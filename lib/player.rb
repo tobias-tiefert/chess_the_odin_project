@@ -74,20 +74,11 @@ class Player
 
   def make_move(user_input, board = @board)
     piece = input_piece(user_input, board)
-    target = user_input.split('->')[1].strip
-    board == @board ? move(piece, target) : test_move(piece, target)
-  end
+    target = translate(user_input.split('->')[1].strip)
 
-  def test_move(piece, target)
     return if piece.nil?
 
-    piece.test_move(translate(target))
-  end
-
-  def move(piece, target)
-    return if piece.nil?
-
-    piece.move(translate(target))
+    board == @board ? piece.move(target) : piece.move(target, 'test')
   end
 
   def wrong_input_message(user_input)

@@ -65,34 +65,23 @@ class Piece
     [position[0] + position_change[0], position[1] + position_change[1]]
   end
 
-  def move(target)
-    if moves.include?(target)
+  def move(target, type = 'real')
+    if moves.include?(target) && type == 'real'
       @board.remove_dummy
-      perform_move(target)
-    else
+      perform_move(target, type)
+    elsif type == 'real'
       no_valid_move_message(target)
     end
   end
 
-  def test_move(target)
-    return unless moves.include?(target)
-
-    perform_test_move(target)
-    @board.remove_dummy
-  end
-
-  def perform_move(target)
+  def perform_move(target, type = 'real')
     target_field = @board.at(target)
     update_board(target)
-    strike_message(target_field) unless target_field.nil?
+    strike_message(target_field) if type == 'real' && !target_field.nil?
     @moved = true
   end
 
   private
-
-  def perform_test_move(target)
-    update_board(target)
-  end
 
   def update_board(target)
     @board.positions[@position[1]][@position[0]] = nil
