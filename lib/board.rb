@@ -6,6 +6,7 @@ require_relative 'queen'
 require_relative 'rook'
 require_relative 'knight'
 require_relative 'bishop'
+require_relative 'dummy_pawn'
 
 # class that represents the board in the chess game
 class Board
@@ -55,7 +56,11 @@ class Board
   def snapshot
     output = ''
     @positions.flatten.each do |field|
-      field_sign = field.nil? ? '-' : field.token
+      field_sign = if field.nil? || field.is_a?(DummyPawn)
+                     '-'
+                   else
+                     field.token
+                   end
       output += field_sign
     end
     output
@@ -63,6 +68,33 @@ class Board
 
   def copy(old_board = self)
     new_board = Board.new
+    copy_positions(old_board, new_board)
+    copy_casteling(old_board, new_board)
+    copy_dummy_pawn(old_board, new_board)
+    new_board
+  end
+
+  def copy_casteling(old_board, new_board)
+    new_board.king('white').castled = old_board.king('white').castled
+    new_board.king('black').castled = old_board.king('black').castled
+  end
+
+  def copy_dummy_pawn(old_board, new_board)
+    return if old_board.dummy_pawn.nil?
+
+    old_dummy = old_board.dummy_pawn
+    new_dummy = DummyPawn.new(old_dummy.pawn_position, old_dummy.color)
+    new_board.put_on_board(new_dummy, old_dummy.position)
+  end
+
+  def remove_dummy
+    return if dummy_pawn.nil?
+
+    position = dummy_pawn.position
+    @positions[position[1]][position[0]] = nil
+  end
+
+  def copy_positions(old_board, new_board)
     lines = lines(old_board.snapshot)
     lines.each_with_index do |line, y_postion|
       line.chars.each_with_index do |char, x_position|
@@ -72,11 +104,14 @@ class Board
         new_board.put_on_board(element, [x_position, y_postion])
       end
     end
-    new_board
   end
 
   def king(color)
     @positions.flatten.compact.select { |piece| piece.color == color && piece.is_a?(King) }.first
+  end
+
+  def dummy_pawn
+    @positions.flatten.compact.select { |piece| piece.is_a?(DummyPawn) }.first
   end
 
   def revert_char(char)
@@ -116,7 +151,15 @@ class Board
   end
 
   def all(color = nil)
-    color.nil? ? @positions.flatten.compact : @positions.flatten.compact.select { |piece| piece.color == color }
+    if color.nil?
+      @positions.flatten.compact.select do |piece|
+        piece.is_a?(Piece)
+      end
+    else
+      @positions.flatten.compact.select do |piece|
+        piece.is_a?(Piece) && piece.color == color
+      end
+    end
   end
 
   private

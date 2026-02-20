@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'translate'
+require_relative 'dummy_pawn'
 
 # super class for all the pieces in the chess game
 class Piece
@@ -39,15 +40,15 @@ class Piece
 
       field_element_color = @board.at(new_position).nil? ? 'empty' : @board.at(new_position).color
 
-      if on_the_board?(new_position) && free_field?(field_element_color) || opponent_field?(field_element_color)
+      if on_the_board?(new_position) && free_field?(field_element_color) || opponent_field?(@board.at(new_position))
         output << new_position
       end
     end
     output.sort
   end
 
-  def opponent_field?(field_element_color)
-    field_element_color == @opponent_color
+  def opponent_field?(field_element)
+    field_element.color == @opponent_color && field_element.is_a?(Piece)
   end
 
   def free_field?(field_element_color)
@@ -63,11 +64,19 @@ class Piece
   end
 
   def move(target)
-    moves.include?(target) ? perform_move(target) : no_valid_move_message(target)
+    if moves.include?(target)
+      @board.remove_dummy
+      perform_move(target)
+    else
+      no_valid_move_message(target)
+    end
   end
 
   def test_move(target)
-    perform_test_move(target) if moves.include?(target)
+    return unless moves.include?(target)
+
+    perform_test_move(target)
+    @board.remove_dummy
   end
 
   def perform_move(target)

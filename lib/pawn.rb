@@ -32,13 +32,12 @@ class Pawn < Piece
   def initialize(color = 'white', board = nil)
     super(color, board)
     @name = 'Pawn'
-    @directions = get_directions(@color)
+    @directions = directions(@color)
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
-    @promote_line = get_promote_line(color)
-    @dummy_opponent_color = dummy_opponent_color
+    @promote_line = promote_line(color)
   end
 
-  def get_directions(color)
+  def directions(color)
     color == 'white' ? WHITE_DIRECTIONS : BLACK_DIRECTIONS
   end
 
@@ -67,12 +66,47 @@ class Pawn < Piece
   end
 
   def move(target)
-    super
+    moves.include?(target) ? perform_pawn_move(target) : no_valid_move_message(target)
     promote if @position[1] == @promote_line
   end
 
-  def get_promote_line(color)
-    color == 'white' ? 0 : 7
+  def test_move(target)
+    moves.include?(target) ? perform_pawn_test_move(target) : no_valid_move_message(target)
+  end
+
+  def perform_pawn_move(target)
+    target_field = @board.at(target)
+    if target_field.is_a?(DummyPawn)
+      en_passant(target, target_field)
+    else
+      @board.remove_dummy
+      place_dummy(target) if @moved == false && long_move?(target)
+      perform_move(target)
+    end
+  end
+
+  def perform_pawn_test_move(target)
+    target_field = @board.at(target)
+    if target_field.is_a?(DummyPawn)
+      test_en_passant(target, target_field)
+    else
+      @board.remove_dummy
+      place_dummy(target) if @moved == false && long_move?(target)
+      perform_test_move(target)
+    end
+  end
+
+  def en_passant(target, dummy_pawn)
+    @board.positions[dummy_pawn.pawn_position[1]][dummy_pawn.pawn_position[0]] = nil
+    update_board(target)
+    strike_message(dummy_pawn)
+    @moved = true
+  end
+
+  def test_en_passant(target, dummy_pawn)
+    @board.positions[dummy_pawn.pawn_position[1]][dummy_pawn.pawn_position[0]] = nil
+    update_board(target)
+    @moved = true
   end
 
   def promote
@@ -83,7 +117,28 @@ class Pawn < Piece
 
   private
 
+  def promote_line(color)
+    color == 'white' ? 0 : 7
+  end
+
+  def opponent_field?(field_element)
+    !field_element.nil? && field_element.color == @opponent_color
+  end
+
+  def place_dummy(target)
+    dummy_position = @color == 'white' ? [target[0], target[1] + 1] : [target[0], target[1] - 1]
+    dummy = DummyPawn.new(target, @color)
+    @board.put_on_board(dummy, dummy_position)
+  end
+
+  def long_move?(target)
+    long_move_line = @color == 'white' ? 4 : 3
+    target[1] == long_move_line
+  end
+
   def legal_move?(position)
+    return false unless on_the_board?(position)
+
     field = @board.at(position)
     field_color = field.nil? ? 'empty' : field.color
     on_the_board?(position) && free_field?(field_color)
@@ -91,16 +146,7 @@ class Pawn < Piece
 
   def legal_strike?(position)
     field = @board.at(position)
-    field_color = field.nil? ? 'empty' : field.color
-    on_the_board?(position) && opponent_field?(field_color)
-  end
-
-  def dummy_opponent_color
-    @color == 'white' ? 'dummy_black' : 'dummy_white'
-  end
-
-  def opponent_field?(field_element_color)
-    [@opponent_color, @dummy_opponent_color].include?(field_element_color)
+    on_the_board?(position) && opponent_field?(field)
   end
 
   def new_piece(user_input)

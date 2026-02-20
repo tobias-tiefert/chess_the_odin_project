@@ -23,6 +23,9 @@ describe Queen do
     context 'when on an empty field' do
       subject(:queen) { described_class.new('white') }
       let(:board) { double('board') }
+      before(:each) do
+        allow(board).to receive(:remove_dummy)
+      end
       it 'finds all possible moves on the board for the top left corner position' do
         start_postion = [0, 0]
 
@@ -103,6 +106,7 @@ describe Queen do
       queen.board = board
       queen.position = [4, 4]
       allow(queen).to receive(:puts)
+      allow(board).to receive(:remove_dummy)
     end
 
     it "doesn't move the piece if given a target that shouldn't be reached" do

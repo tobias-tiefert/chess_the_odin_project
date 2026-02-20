@@ -46,15 +46,17 @@ class Player
   private
 
   def message_before_decide
-    puts "\n\e[91m#{@name} you are in check\e[0m" if check?
+    puts ' '
+    puts "\e[91m#{@name} you are in check\e[0m" if check?
     puts "#{@name} make your move\n"
   end
 
   def message_no_valid_decision(input)
     puts ' '
-    if valid?(input)
+
+    if valid?(input) && input_piece(input) == @color
       puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
-      puts "You can't make this move. You would be in check" if still_in_check?(input)
+      puts "You can't make this move. You would be in check" if still_in_check?(input) && !check?
     end
 
     puts 'Please choose again'
@@ -71,25 +73,43 @@ class Player
   end
 
   def make_move(user_input, board = @board)
-    input = user_input.split('->')
-    piece = board.at(translate(input[0].strip))
-    board == @board ? move(piece, input) : test_move(piece, input)
+    piece = input_piece(user_input, board)
+    target = user_input.split('->')[1].strip
+    board == @board ? move(piece, target) : test_move(piece, target)
   end
 
-  def test_move(piece, input)
+  def test_move(piece, target)
     return if piece.nil?
 
-    piece.test_move(translate(input[1].strip))
+    piece.test_move(translate(target))
   end
 
-  def move(piece, input)
+  def move(piece, target)
+    return if piece.nil?
+
+    piece.move(translate(target))
+  end
+
+  def wrong_input_message(user_input)
+    input = user_input.split('->')
+    piece = input_piece(user_input)
     if piece.nil?
-      puts "There is nothing on #{input[0].strip}"
-    elsif piece.color == @color
-      piece.move(translate(input[1].strip))
-    else
-      puts "\n#{@name} don't try to move a #{piece.color} piece. Your color is #{@color}"
+      puts "\nThere is nothing on #{input[0].strip}"
+    elsif piece.color != @color
+      puts "\n#{@name} don't try to move a #{piece.color} piece."
     end
+  end
+
+  def wrong_input?(input)
+    piece = input_piece(input)
+    piece.nil? || piece.color != @color
+  end
+
+  def input_piece(user_input, board = @board)
+    return if user_input.nil?
+
+    input = user_input.split('->')
+    board.at(translate(input[0].strip))
   end
 
   def decision_loop(positions_before)
@@ -97,11 +117,19 @@ class Player
       input = gets.chomp.downcase
       return input if input.include?('resign') || input.include?('draw') || input.include?('save')
 
-      make_move(input, @board) if valid?(input) && !still_in_check?(input)
+      input_validation(input)
 
       break if @board.snapshot != positions_before
 
       message_no_valid_decision(input)
+    end
+  end
+
+  def input_validation(input)
+    if wrong_input?(input)
+      wrong_input_message(input)
+    elsif !wrong_input?(input) && valid?(input) && !still_in_check?(input)
+      make_move(input, @board)
     end
   end
 end

@@ -29,6 +29,7 @@ describe Pawn do
     before(:each) do
       allow(white_piece).to receive(:color)
       allow(black_piece).to receive(:color)
+      allow(board).to receive(:remove_dummy)
     end
     it 'finds the move and the long move positions for white on an empty field' do
       start_postion = [4, 6]
@@ -114,6 +115,7 @@ describe Pawn do
       pawn.board = board
       pawn.position = [4, 4]
       allow(pawn).to receive(:puts)
+      allow(board).to receive(:remove_dummy)
     end
 
     it "doesn't move the piece if given a target that shouldn't be reached" do
@@ -164,6 +166,7 @@ describe Pawn do
     before(:each) do
       pawn.board = board
       pawn.position = [4, 1]
+      allow(board).to receive(:remove_dummy)
     end
     it 'displays the promote message' do
       empty_positions = [[], [], [], [], [], [], [], []]

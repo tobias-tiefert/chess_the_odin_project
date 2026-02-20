@@ -7,6 +7,8 @@ class King < Piece
   WHITE_TOKEN = '♔'
   BLACK_TOKEN = '♚'
 
+  attr_accessor :castled
+
   def initialize(color = 'white')
     super(color)
     @name = 'King'
@@ -14,6 +16,7 @@ class King < Piece
                    [1, 1], [-1, 1], [-1, -1], [1, -1]]
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @casteling_moves = casteling_moves
+    @castled = false
   end
 
   def casteling_moves
@@ -57,12 +60,15 @@ class King < Piece
     perform_move([target, line])
     rook.perform_move([rook_target, line])
     puts "\n#{@color.capitalize} is casteling to the #{side}"
+    @castled = true
   end
 
   def casteling_conditions(side)
+    return false if @castled == true
+
     line = @position[1]
     corner = side == 'left' ? 0 : 7
-    return true if no_attack?(traversing(side)) && free_way?(between(side)) && rook_moved?([corner, line]) == false
+    return true if no_attack?(traversing(side)) && free_way?(between(side)) && !rook_moved?([corner, line])
 
     error_messages(no_attack?(traversing(side)), free_way?(between(side)), rook_moved?([corner, line]), side)
     false
