@@ -143,6 +143,13 @@ describe Board do
       allow(black_king).to receive(:color).and_return('black')
       allow(black_pawn1).to receive(:color).and_return('black')
       allow(black_pawn2).to receive(:color).and_return('black')
+
+      allow(white_knight).to receive(:is_a?).and_return(Piece)
+      allow(white_queen).to receive(:is_a?).and_return(Piece)
+      allow(white_rook).to receive(:is_a?).and_return(Piece)
+      allow(black_king).to receive(:is_a?).and_return(Piece)
+      allow(black_pawn1).to receive(:is_a?).and_return(Piece)
+      allow(black_pawn2).to receive(:is_a?).and_return(Piece)
     end
 
     it 'returns all white pieces' do
@@ -222,6 +229,8 @@ describe Board do
       board.positions = test_positions
       allow(white_queen).to receive(:color).and_return('white')
       allow(black_rook).to receive(:color).and_return('black')
+      allow(white_queen).to receive(:is_a?).and_return(Piece)
+      allow(black_rook).to receive(:is_a?).and_return(Piece)
       allow(white_queen).to receive(:moves).and_return(queen_moves)
       allow(black_rook).to receive(:moves).and_return(rook_moves)
     end
