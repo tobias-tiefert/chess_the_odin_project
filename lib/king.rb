@@ -16,6 +16,7 @@ class King < Piece
                    [1, 1], [-1, 1], [-1, -1], [1, -1]]
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @casteling_moves = casteling_moves
+    @castled = false
   end
 
   def casteling_moves
@@ -56,6 +57,7 @@ class King < Piece
     rook.perform_move([rook_target, line])
     puts "\n#{@color.capitalize} is casteling to the #{side}" if type == 'real'
     @moved = true
+    @castled = true
   end
 
   def casteling_conditions(side, type)

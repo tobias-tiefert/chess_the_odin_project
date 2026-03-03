@@ -17,6 +17,7 @@ class Board
   WHITE_FIELD = "\e[107m"
 
   attr_accessor :positions
+  attr_writer :game
 
   def initialize(game = nil)
     @game = game
@@ -131,6 +132,7 @@ class Board
     end
   end
 
+  # Splits the snapshot sting into 8 lines (strings) and puts them into an arry
   def lines(snapshot)
     lines = []
     8.times do

@@ -94,7 +94,7 @@ class Pawn < Piece
     else
       @board.remove_dummy
       place_dummy(target) if @moved == false && long_move?(target)
-      perform_test_move(target)
+      perform_move(target, 'test')
     end
   end
 

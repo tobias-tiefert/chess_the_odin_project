@@ -1,0 +1,635 @@
+---
+- &1 !ruby/object:Board
+  game: !ruby/object:Game
+    board: *1
+    players: &6
+    - !ruby/object:Player
+      name: White
+      color: white
+      board: *1
+    - &2 !ruby/object:Player
+      name: Black
+      color: black
+      board: *1
+    current_player: *2
+    winner:
+    draw_message: It's a draw
+  positions:
+  - - !ruby/object:Rook
+      name: Rook
+      color: black
+      opponent_color: white
+      position:
+      - 0
+      - 0
+      board: *1
+      token: "♜"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+    -
+    - !ruby/object:Bishop
+      name: Bishop
+      color: black
+      opponent_color: white
+      position:
+      - 2
+      - 0
+      board: *1
+      token: "♝"
+      moved: false
+      directions:
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      field_color: white
+    - !ruby/object:Queen
+      name: Queen
+      color: black
+      opponent_color: white
+      position:
+      - 3
+      - 0
+      board: *1
+      token: "♛"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+    - !ruby/object:King
+      name: King
+      color: black
+      opponent_color: white
+      position:
+      - 4
+      - 0
+      board: *1
+      token: "♚"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      casteling_moves:
+      - - 2
+        - 0
+      - - 6
+        - 0
+      castled: false
+    - !ruby/object:Bishop
+      name: Bishop
+      color: black
+      opponent_color: white
+      position:
+      - 5
+      - 0
+      board: *1
+      token: "♝"
+      moved: false
+      directions:
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      field_color: white
+    -
+    - !ruby/object:Rook
+      name: Rook
+      color: black
+      opponent_color: white
+      position:
+      - 7
+      - 0
+      board: *1
+      token: "♜"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+  - - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 0
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: &3
+        :move:
+        - 0
+        - 1
+        :strikes:
+        - - -1
+          - 1
+        - - 1
+          - 1
+        :long_move:
+        - 0
+        - 2
+      promote_line: 7
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 1
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: *3
+      promote_line: 7
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 2
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: *3
+      promote_line: 7
+    -
+    -
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 5
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: *3
+      promote_line: 7
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 6
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: *3
+      promote_line: 7
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 7
+      - 1
+      board: *1
+      token: "♟"
+      moved: false
+      directions: *3
+      promote_line: 7
+  - -
+    -
+    - !ruby/object:Knight
+      name: Knight
+      color: black
+      opponent_color: white
+      position:
+      - 2
+      - 2
+      board: *1
+      token: "♞"
+      moved: true
+      directions:
+      - - 2
+        - 1
+      - - 2
+        - -1
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - -2
+        - 1
+      - - -2
+        - -1
+      - - -1
+        - 2
+      - - -1
+        - -2
+    -
+    - !ruby/object:Pawn
+      name: Pawn
+      color: black
+      opponent_color: white
+      position:
+      - 4
+      - 2
+      board: *1
+      token: "♟"
+      moved: true
+      directions: *3
+      promote_line: 7
+    - !ruby/object:Knight
+      name: Knight
+      color: black
+      opponent_color: white
+      position:
+      - 5
+      - 2
+      board: *1
+      token: "♞"
+      moved: true
+      directions:
+      - - 2
+        - 1
+      - - 2
+        - -1
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - -2
+        - 1
+      - - -2
+        - -1
+      - - -1
+        - 2
+      - - -1
+        - -2
+    -
+    -
+  - -
+    -
+    -
+    -
+    -
+    -
+    -
+    -
+  - -
+    -
+    -
+    -
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position: &4
+      - 4
+      - 4
+      board: *1
+      token: "♙"
+      moved: true
+      directions: &5
+        :move:
+        - 0
+        - -1
+        :strikes:
+        - - -1
+          - -1
+        - - 1
+          - -1
+        :long_move:
+        - 0
+        - -2
+      promote_line: 0
+    -
+    -
+    -
+  - -
+    -
+    -
+    -
+    - !ruby/object:DummyPawn
+      color: white
+      board: *1
+      position:
+      - 4
+      - 5
+      name: Pawn
+      token: " "
+      pawn_position: *4
+    - !ruby/object:Knight
+      name: Knight
+      color: white
+      opponent_color: black
+      position:
+      - 5
+      - 5
+      board: *1
+      token: "♘"
+      moved: true
+      directions:
+      - - 2
+        - 1
+      - - 2
+        - -1
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - -2
+        - 1
+      - - -2
+        - -1
+      - - -1
+        - 2
+      - - -1
+        - -2
+    -
+    -
+  - - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 0
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 1
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 2
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+    -
+    -
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 5
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 6
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+    - !ruby/object:Pawn
+      name: Pawn
+      color: white
+      opponent_color: black
+      position:
+      - 7
+      - 6
+      board: *1
+      token: "♙"
+      moved: false
+      directions: *5
+      promote_line: 0
+  - - !ruby/object:Rook
+      name: Rook
+      color: white
+      opponent_color: black
+      position:
+      - 0
+      - 7
+      board: *1
+      token: "♖"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+    - !ruby/object:Knight
+      name: Knight
+      color: white
+      opponent_color: black
+      position:
+      - 1
+      - 7
+      board: *1
+      token: "♘"
+      moved: false
+      directions:
+      - - 2
+        - 1
+      - - 2
+        - -1
+      - - 1
+        - 2
+      - - 1
+        - -2
+      - - -2
+        - 1
+      - - -2
+        - -1
+      - - -1
+        - 2
+      - - -1
+        - -2
+    - !ruby/object:Bishop
+      name: Bishop
+      color: white
+      opponent_color: black
+      position:
+      - 2
+      - 7
+      board: *1
+      token: "♗"
+      moved: false
+      directions:
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      field_color: white
+    - !ruby/object:Queen
+      name: Queen
+      color: white
+      opponent_color: black
+      position:
+      - 3
+      - 7
+      board: *1
+      token: "♕"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+    - !ruby/object:King
+      name: King
+      color: white
+      opponent_color: black
+      position:
+      - 4
+      - 7
+      board: *1
+      token: "♔"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      casteling_moves:
+      - - 2
+        - 7
+      - - 6
+        - 7
+      castled: false
+    - !ruby/object:Bishop
+      name: Bishop
+      color: white
+      opponent_color: black
+      position:
+      - 5
+      - 7
+      board: *1
+      token: "♗"
+      moved: false
+      directions:
+      - - 1
+        - 1
+      - - -1
+        - 1
+      - - -1
+        - -1
+      - - 1
+        - -1
+      field_color: white
+    -
+    - !ruby/object:Rook
+      name: Rook
+      color: white
+      opponent_color: black
+      position:
+      - 7
+      - 7
+      board: *1
+      token: "♖"
+      moved: false
+      directions:
+      - - 0
+        - 1
+      - - 1
+        - 0
+      - - 0
+        - -1
+      - - -1
+        - 0
+- *6
+- *2

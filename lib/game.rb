@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'yaml'
 require_relative 'board'
 require_relative 'player'
 
@@ -16,12 +17,11 @@ class Game
     @current_player = @players[0]
     @winner = nil
     @draw_message = "It's a draw"
-    @saveing = false
   end
 
   def start
     @board.set_up
-    play until game_over? || @saving
+    play until game_over?
     result
   end
 
@@ -37,7 +37,7 @@ class Game
   def play
     @board.draw_board
     result = @current_player.decide
-    check_result(result)
+    process_result(result)
     switch_players
   end
 
@@ -57,13 +57,18 @@ class Game
     puts message
   end
 
-  def check_result(result)
+  def process_result(result)
     other_player = @current_player == @players[0] ? @players[1] : @players[0]
-    draw_stalemate(other_player)
     win_checkmate(other_player)
-    win_resign(result, other_player)
-    propose_draw(result, other_player)
-    check_save(result)
+    draw_stalemate(other_player)
+    extra_commands(result, other_player)
+  end
+
+  def extra_commands(result, other_player)
+    win_resign(result, other_player) if result.include?('resign')
+    propose_draw(result, other_player) if result.include?('draw')
+    save_game if result.include?('save')
+    load_game if result.include?('load')
   end
 
   def propose_draw(result, other_player)
@@ -90,12 +95,6 @@ class Game
     end
   end
 
-  def check_save(result)
-    return unless result.nil? == false && result.include?('save')
-
-    puts 'saving'
-  end
-
   def win_checkmate(other_player)
     return unless other_player.checkmate?
 
@@ -115,5 +114,27 @@ class Game
 
     @winner = other_player
     @win_message = "#{@current_player.name} resigns - #{@winner.name} wins the game"
+  end
+
+  def save_game
+    puts 'Saving your current game'
+    savegame = [@board, @players, @current_player]
+    saved_game = File.new 'saved_game.yml', 'w'
+    saved_game.puts YAML.dump(savegame).to_s
+    saved_game.close
+    switch_players
+  end
+
+  def load_game
+    loaded_game = ''
+    File.readlines('saved_game.yml').each do |line|
+      loaded_game += line
+    end
+    loaded_game = YAML.unsafe_load(loaded_game)
+    @board = loaded_game[0]
+    @players = loaded_game[1]
+    @current_player = loaded_game[2]
+    @board.game = self
+    switch_players
   end
 end

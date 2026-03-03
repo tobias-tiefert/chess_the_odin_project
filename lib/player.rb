@@ -5,7 +5,7 @@ require_relative 'translate'
 # class that represents the players of the chess game
 class Player
   attr_reader :name, :color, :king
-  attr_writer :board # only for test purpos - remove before going live
+  attr_writer :board # only for test purpose
 
   include TRANSLATE
 
@@ -17,8 +17,12 @@ class Player
 
   def decide
     positions_before = @board.snapshot
+    castled_before = {
+      white: @board.king('white').castled,
+      black: @board.king('black').castled
+    }
     message_before_decide
-    decision_loop(positions_before)
+    decision_loop(positions_before, castled_before)
   end
 
   def check?
@@ -26,7 +30,6 @@ class Player
   end
 
   def checkmate?
-    puts no_solution?
     check? && no_solution?
   end
 
@@ -53,7 +56,7 @@ class Player
   def message_no_valid_decision(input)
     puts ' '
 
-    if valid?(input) && input_piece(input).color == @color
+    if valid?(input) && input_piece(input) && input_piece(input).color == @color
       puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
       puts "You can't make this move. You would be in check" if still_in_check?(input) && !check?
     end
@@ -95,26 +98,32 @@ class Player
   end
 
   def input_piece(user_input, board = @board)
-    return if user_input.nil?
+    return false if user_input.nil?
 
     input = user_input.split('->')
     board.at(translate(input[0].strip))
   end
 
-  def decision_loop(positions_before)
+  def decision_loop(positions_before, castled_before)
     loop do
       input = gets.chomp.downcase
-      return input if input.include?('resign') || input.include?('draw') || input.include?('save')
+      if input.include?('resign') || input.include?('draw') || input.include?('save') || input.include?('load')
+        return input
+      end
 
-      input_validation(input)
-
-      break if @board.snapshot != positions_before
+      process_input(input)
+      move = {
+        positions_before: positions_before,
+        castled_before: castled_before,
+        input: input
+      }
+      return move if @board.snapshot != positions_before
 
       message_no_valid_decision(input)
     end
   end
 
-  def input_validation(input)
+  def process_input(input)
     if wrong_input?(input)
       wrong_input_message(input)
     elsif !wrong_input?(input) && valid?(input) && !still_in_check?(input)
