@@ -47,10 +47,14 @@ describe Knight do
       let(:board) { double('board') }
       let(:piece) { double('piece') }
 
-      it 'it moves on fields with the enemy (to strike)' do
-        start_postion = [4, 3]
+      before(:each) do
         knight.instance_variable_set(:@board, board)
         allow(board).to receive(:at).and_return(piece)
+        allow(piece).to receive(:is_a?).with(Piece).and_return(true)
+        allow(piece).to receive(:is_a?).with(DummyPawn).and_return(false)
+      end
+      it 'it moves on fields with the enemy (to strike)' do
+        start_postion = [4, 3]
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[2, 2], [2, 4], [3, 1], [3, 5], [5, 1], [5, 5], [6, 2], [6, 4]]
         moves = knight.moves(start_postion)
@@ -58,8 +62,6 @@ describe Knight do
       end
       it "doesn't move when there are other pieces from the same color on the target field" do
         start_postion = [4, 3]
-        knight.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = knight.moves(start_postion)

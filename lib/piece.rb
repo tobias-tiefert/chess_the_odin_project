@@ -66,7 +66,7 @@ class Piece
   end
 
   def move(target, type = 'real')
-    if moves.include?(target) && type == 'real'
+    if moves.include?(target)
       @board.remove_dummy
       perform_move(target, type)
     elsif type == 'real'

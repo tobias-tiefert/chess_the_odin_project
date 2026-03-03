@@ -144,10 +144,9 @@ class Board
   def under_attack?(field, color)
     opponent_color = color == 'white' ? 'black' : 'white'
     opponent_pieces = all(opponent_color)
-    opponent_pieces.each do |piece|
-      return true if piece.moves.include?(field)
+    opponent_pieces.any? do |piece|
+      piece.moves.include?(field)
     end
-    false
   end
 
   def all(color = nil)

@@ -74,11 +74,16 @@ describe Queen do
       subject(:queen) { described_class.new('white') }
       let(:board) { double('board') }
       let(:piece) { double('piece') }
+      before(:each) do
+        queen.instance_variable_set(:@board, board)
+        allow(board).to receive(:at).and_return(piece)
+        allow(piece).to receive(:is_a?).with(Piece).and_return(true)
+        allow(piece).to receive(:is_a?).with(DummyPawn).and_return(false)
+      end
 
       it 'only makes one move when there is an opponent arround (to strike)' do
         start_postion = [4, 3]
-        queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
+
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 2], [3, 4], [5, 2], [5, 4],
                           [3, 3], [5, 3], [4, 2], [4, 4]]
@@ -87,8 +92,6 @@ describe Queen do
       end
       it "doesn't move when there are other pieces from the same color arround" do
         start_postion = [4, 3]
-        queen.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = queen.moves(start_postion)
@@ -133,6 +136,7 @@ describe Queen do
       empty_positions = [[], [], [], [nil, nil, nil, enemy_piece], [], [], [], []]
       allow(board).to receive(:at).and_return(enemy_piece)
       allow(board).to receive(:positions).and_return(empty_positions)
+      allow(enemy_piece).to receive(:is_a?).and_return(Piece)
       allow(enemy_piece).to receive(:color).and_return('black')
       allow(enemy_piece).to receive(:name).and_return('bishop')
       strike_message = 'The white queen took the black bishop'

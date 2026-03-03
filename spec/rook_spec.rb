@@ -49,10 +49,15 @@ describe Rook do
       let(:board) { double('board') }
       let(:piece) { double('piece') }
 
-      it 'only makes one move when there is an opponent arround (to strike)' do
-        start_postion = [4, 3]
+      before(:each) do
         rook.instance_variable_set(:@board, board)
         allow(board).to receive(:at).and_return(piece)
+        allow(piece).to receive(:is_a?).with(Piece).and_return(true)
+        allow(piece).to receive(:is_a?).with(DummyPawn).and_return(false)
+      end
+      it 'only makes one move when there is an opponent arround (to strike)' do
+        start_postion = [4, 3]
+
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 3], [5, 3],
                           [4, 2], [4, 4]]
@@ -61,8 +66,6 @@ describe Rook do
       end
       it "doesn't move when there are other pieces from the same color arround" do
         start_postion = [4, 3]
-        rook.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = rook.moves(start_postion)

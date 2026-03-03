@@ -16,7 +16,6 @@ class King < Piece
                    [1, 1], [-1, 1], [-1, -1], [1, -1]]
     @token = create_token(color, WHITE_TOKEN, BLACK_TOKEN)
     @casteling_moves = casteling_moves
-    @castled = false
   end
 
   def casteling_moves
@@ -30,7 +29,7 @@ class King < Piece
   end
 
   def move(target, type = 'real')
-    if @casteling_moves.include?(target) && @castled == false
+    if @casteling_moves.include?(target) && @moved == false
       casteling(target, type)
     else
       super(target, type)
@@ -40,9 +39,9 @@ class King < Piece
   private
 
   def casteling(target, type)
-    if target == @casteling_moves[0] && casteling_conditions('left')
+    if target == @casteling_moves[0] && casteling_conditions('left', type)
       perform_casteling('left', type)
-    elsif target == @casteling_moves[1] && casteling_conditions('right')
+    elsif target == @casteling_moves[1] && casteling_conditions('right', type)
       perform_casteling('right', type)
     end
   end
@@ -56,17 +55,19 @@ class King < Piece
     perform_move([target, line])
     rook.perform_move([rook_target, line])
     puts "\n#{@color.capitalize} is casteling to the #{side}" if type == 'real'
-    @castled = true
+    @moved = true
   end
 
-  def casteling_conditions(side)
-    return false if @castled == true
+  def casteling_conditions(side, type)
+    return false if @moved == true
 
     line = @position[1]
     corner = side == 'left' ? 0 : 7
     return true if no_attack?(traversing(side)) && free_way?(between(side)) && !rook_moved?([corner, line])
 
-    error_messages(no_attack?(traversing(side)), free_way?(between(side)), rook_moved?([corner, line]), side)
+    if type == 'real'
+      error_messages(no_attack?(traversing(side)), free_way?(between(side)), rook_moved?([corner, line]), side)
+    end
     false
   end
 

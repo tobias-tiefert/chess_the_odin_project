@@ -26,21 +26,20 @@ class Player
   end
 
   def checkmate?
+    puts no_solution?
     check? && no_solution?
   end
 
   def stalemate?
-    check? == false && no_solution?
+    !check? && no_solution?
   end
 
   def no_solution?
-    @board.all(@color).each do |piece|
-      piece.moves.each do |move|
-        input = "#{piece.translate_back(piece.position)}->#{piece.translate_back(move)}"
-        return false unless still_in_check?(input)
+    @board.all(@color).all? do |piece|
+      piece.moves.all? do |move|
+        still_in_check?("#{piece.translate_back(piece.position)}->#{piece.translate_back(move)}")
       end
     end
-    true
   end
 
   private
@@ -54,7 +53,7 @@ class Player
   def message_no_valid_decision(input)
     puts ' '
 
-    if valid?(input) && input_piece(input) == @color
+    if valid?(input) && input_piece(input).color == @color
       puts "You can't make this move. You would still be in check" if still_in_check?(input) && check?
       puts "You can't make this move. You would be in check" if still_in_check?(input) && !check?
     end
@@ -75,7 +74,6 @@ class Player
   def make_move(user_input, board = @board)
     piece = input_piece(user_input, board)
     target = translate(user_input.split('->')[1].strip)
-
     return if piece.nil?
 
     board == @board ? piece.move(target) : piece.move(target, 'test')

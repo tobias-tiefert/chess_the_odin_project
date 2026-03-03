@@ -52,12 +52,14 @@ describe King do
       let(:piece) { double('piece') }
       before(:each) do
         king.instance_variable_set(:@moved, true)
+        king.instance_variable_set(:@board, board)
+        allow(board).to receive(:at).and_return(piece)
+        allow(piece).to receive(:is_a?).with(Piece).and_return(true)
+        allow(piece).to receive(:is_a?).with(DummyPawn).and_return(false)
       end
 
       it 'it moves on fields with the enemy (to strike)' do
         start_postion = [4, 3]
-        king.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('black')
         possible_moves = [[3, 2], [3, 4], [5, 2], [5, 4],
                           [3, 3], [5, 3], [4, 2], [4, 4]]
@@ -66,8 +68,6 @@ describe King do
       end
       it "doesn't move when there are other pieces from the same color on the target field" do
         start_postion = [4, 3]
-        king.instance_variable_set(:@board, board)
-        allow(board).to receive(:at).and_return(piece)
         allow(piece).to receive(:color).and_return('white')
         possible_moves = []
         moves = king.moves(start_postion)
