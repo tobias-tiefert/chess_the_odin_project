@@ -20,6 +20,7 @@ class Game
   end
 
   def start
+    instructions
     @board.set_up
     play until game_over?
     result
@@ -29,9 +30,44 @@ class Game
     @board = board
     players[0].board = board
     players[1].board = board
-
     play until game_over?
     result
+  end
+
+  def instructions
+    puts <<~HEREDOC
+
+      \e[96m
+      ---------------
+      WELCOM TO CHESS
+      --------------- \e[0m
+
+      Instructions:
+
+      You can make a move by typing the field of one of your pieces
+      followd by a \e[96m->\e[0m and a target field.
+
+      \e[96mb1 -> c3\e[0m
+      moves the white knight from its starting position to c3
+
+      \e[96mCasteling:\e[0m
+      Move the king to a castling postion
+
+      \e[96mEn passant strike:\e[0m
+      move your pawn to the field that the oppopnent's pawn did cross with
+      a two square move
+
+      Save:         type \e[96msave\e[0m
+      Load:         type \e[96mload\e[0m
+      Resign:       type \e[96mresign\e[0m
+      Propose draw: type \e[96mdraw\e[0m
+
+      type \e[96mstart\e[0m to start the game
+    HEREDOC
+    loop do
+      user_input = gets.chomp.downcase
+      break if user_input
+    end
   end
 
   def play

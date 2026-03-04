@@ -70,7 +70,6 @@ class Board
   def copy(old_board = self)
     new_board = Board.new
     copy_positions(old_board, new_board)
-    copy_casteling(old_board, new_board)
     copy_dummy_pawn(old_board, new_board)
     new_board
   end

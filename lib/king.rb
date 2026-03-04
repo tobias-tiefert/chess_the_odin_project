@@ -61,7 +61,7 @@ class King < Piece
   end
 
   def casteling_conditions(side, type)
-    return false if @moved == true
+    return false if @moved == true || @castled == true
 
     line = @position[1]
     corner = side == 'left' ? 0 : 7
