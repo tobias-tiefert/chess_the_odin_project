@@ -47,6 +47,7 @@ describe Player do
       allow(board).to receive(:copy).and_return(board)
       allow(board).to receive(:king).and_return(king)
       allow(king).to receive(:position).and_return([0, 0])
+      allow(king).to receive(:castled).and_return(false)
     end
     it 'makes a move if given an field -> field input' do
       input = 'b1 -> a3'

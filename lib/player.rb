@@ -112,12 +112,7 @@ class Player
       end
 
       process_input(input)
-      move = {
-        positions_before: positions_before,
-        castled_before: castled_before,
-        input: input
-      }
-      return move if @board.snapshot != positions_before
+      break if @board.snapshot != positions_before
 
       message_no_valid_decision(input)
     end
