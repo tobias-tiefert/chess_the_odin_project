@@ -101,6 +101,8 @@ class Game
   end
 
   def extra_commands(result, other_player)
+    return if result.nil?
+
     win_resign(result, other_player) if result.include?('resign')
     propose_draw(result, other_player) if result.include?('draw')
     save_game if result.include?('save')
