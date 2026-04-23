@@ -54,6 +54,7 @@ class Board
     set_up_pieces('black')
   end
 
+
   def snapshot
     output = ''
     @positions.flatten.each do |field|

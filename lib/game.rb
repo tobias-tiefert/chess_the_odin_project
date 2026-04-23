@@ -38,9 +38,9 @@ class Game
     puts <<~HEREDOC
 
       \e[96m
-      ---------------
-      WELCOM TO CHESS
-      --------------- \e[0m
+      ----------------
+      WELCOME TO CHESS
+      ---------------- \e[0m
 
       Instructions:
 
